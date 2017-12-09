@@ -58,14 +58,19 @@ under the License.
   </contributors>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-source-plugin/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/plugins/trunk/maven-source-plugin/</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/plugins/trunk/maven-source-plugin/</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-source-plugin.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-source-plugin.git</developerConnection>
+    <url>https://github.com/apache/maven-source-plugin/tree/${project.scm.tag}</url>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>JIRA</system>
     <url>https://issues.apache.org/jira/browse/MSOURCES</url>
   </issueManagement>
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://builds.apache.org/job/maven-box/job/maven-source-plugin/</url>
+  </ciManagement>
   <distributionManagement>
     <site>
       <id>apache.website</id>
