@@ -81,6 +81,7 @@ under the License.
   <properties>
     <javaVersion>7</javaVersion>
     <mavenVersion>3.0</mavenVersion>
+    <surefire.version>2.21.0</surefire.version>
   </properties>
 
   <dependencies>
