@@ -47,6 +47,7 @@ public abstract class AbstractSourcePluginTestCase
      * Execute the source plugin for the specified project.
      *
      * @param projectName the name of the project
+     * @param classifier The classifier.
      * @throws Exception if an error occurred
      */
     protected void executeMojo( final String projectName, String classifier )
@@ -71,6 +72,7 @@ public abstract class AbstractSourcePluginTestCase
      * @param expectTestSourceArchive if a test source archive is expected
      * @param expectedSourceFiles     the expected files in the source archive, if any
      * @param expectedTestSourceFiles the expected files in the test source archive, if any
+     * @param classifier              the classifier.
      * @return the base directory of the project
      * @throws Exception if any error occurs
      */
@@ -102,6 +104,7 @@ public abstract class AbstractSourcePluginTestCase
      *
      * @param projectName         the project to test
      * @param expectedSourceFiles the expected files in the source archive, if any
+     * @param classifier          the classifier.
      * @return the base directory of the project
      * @throws Exception if any error occurs
      */
@@ -117,6 +120,7 @@ public abstract class AbstractSourcePluginTestCase
      *
      * @param projectName             the project to test
      * @param expectedTestSourceFiles the expected files in the test source archive, if any
+     * @param classifier              the classifier.
      * @return the base directory of the project
      * @throws Exception if any error occurs
      */
