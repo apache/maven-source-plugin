@@ -27,7 +27,6 @@ import org.apache.maven.plugins.annotations.Mojo;
  * This plugin bundles all the sources into a jar archive.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  * @since 2.0.3
  */
 @Mojo( name = "jar", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true )

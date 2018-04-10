@@ -33,7 +33,6 @@ import org.apache.maven.project.MavenProject;
  * the build and is suitable for attaching to the build lifecycle.
  *
  * @author pgier
- * @version $Id$
  * @since 2.1
  */
 @Mojo( name = "jar-no-fork", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true )

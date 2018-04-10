@@ -27,7 +27,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 /**
  * Aggregate sources for all modules in an aggregator project.
  *
- * @version $Id$
  * @since 2.0.3
  */
 @Mojo( name = "aggregate", defaultPhase = LifecyclePhase.PACKAGE, aggregator = true, threadSafe = true )

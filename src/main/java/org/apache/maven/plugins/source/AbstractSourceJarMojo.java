@@ -45,7 +45,6 @@ import org.codehaus.plexus.util.FileUtils;
 /**
  * Base class for bundling sources into a jar archive.
  *
- * @version $Id$
  * @since 2.0.3
  */
 public abstract class AbstractSourceJarMojo
