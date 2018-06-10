@@ -50,7 +50,7 @@ import org.codehaus.plexus.util.FileUtils;
 public abstract class AbstractSourceJarMojo
     extends AbstractMojo
 {
-    private static final String[] DEFAULT_INCLUDES = new String[] { "**/*" };
+    private static final String[] DEFAULT_INCLUDES = new String[] { "**/**" };
 
     private static final String[] DEFAULT_EXCLUDES = new String[] {};
 
