@@ -44,12 +44,6 @@ try
 
     Attributes manifest = jar.getManifest().getMainAttributes();
 
-    if ( !manifest.getValue( new Attributes.Name( "Created-By" ) ).startsWith( "Apache Maven" ) )
-    {
-        System.err.println( "Created-By not equals Apache Maven" );
-        return false;
-    }
-
     String val = manifest.getValue( new Attributes.Name( "An-Entry" ) );
     System.out.println("An-Entry:'"+val+"'");
     if ( !"Some Value".equals( val) )

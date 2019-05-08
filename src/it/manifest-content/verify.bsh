@@ -42,13 +42,6 @@ try
 
     JarFile jar = new JarFile( artifact );
 
-    Attributes manifest = jar.getManifest().getMainAttributes();
-
-    if ( !manifest.getValue( new Attributes.Name( "Created-By" ) ).startsWith( "Apache Maven" ) )
-    {
-        System.err.println( "Created-By not equals Apache Maven" );
-        return false;
-    }
 }
 catch( Throwable e )
 {
