@@ -196,6 +196,16 @@ public abstract class AbstractSourceJarMojo
     @Parameter( defaultValue = "${session}", readonly = true, required = true )
     private MavenSession session;
 
+    /**
+     * Timestamp for reproducible output archive entries, either formatted as ISO 8601
+     * <code>yyyy-MM-dd'T'HH:mm:ssXXX</code> or as an int representing seconds since the epoch (like
+     * <a href="https://reproducible-builds.org/docs/source-date-epoch/">SOURCE_DATE_EPOCH</a>).
+     *
+     * @since 3.2.0
+     */
+    @Parameter( defaultValue = "${project.build.outputTimestamp}" )
+    private String outputTimestamp;
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -270,6 +280,9 @@ public abstract class AbstractSourceJarMojo
         }
 
         MavenArchiver archiver = createArchiver();
+        
+        // configure for Reproducible Builds based on outputTimestamp value
+        archiver.configureReproducible( outputTimestamp );
 
         for ( MavenProject pItem : theProjects )
         {
@@ -408,6 +421,8 @@ public abstract class AbstractSourceJarMojo
     {
         MavenArchiver archiver = new MavenArchiver();
         archiver.setArchiver( jarArchiver );
+        archiver.setCreatedBy( "Maven Source Plugin", "org.apache.maven.plugins", "maven-source-plugin" );
+        archiver.setBuildJdkSpecDefaultEntry( false );
 
         if ( project.getBuild() != null )
         {
