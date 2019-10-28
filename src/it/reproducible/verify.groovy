@@ -72,6 +72,6 @@ zipFile.close();
 String buf = r.toString()
 println buf
 
-String expectedSha1 = System.properties['os.name'].toLowerCase().contains( 'windows' ) ? 'bb0a48a052defa69102e698aa18c60dea41a546a' : '246b4536d1a7df35b06cea54329077a35e6b07d8'
+String expectedSha1 = System.properties['os.name'].toLowerCase().contains( 'windows' ) ? '3fd3c6db6774db82e78bffc645930a186266e209' : 'bc56380204897bf99dea7849853a7d52f470e7d6'
 
 assert buf.startsWith( "reproducible-1.0-sources.jar sha1 = $expectedSha1" )
