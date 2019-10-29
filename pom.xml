@@ -30,7 +30,7 @@ under the License.
   </parent>
 
   <artifactId>maven-source-plugin</artifactId>
-  <version>3.2.0-SNAPSHOT</version>
+  <version>3.2.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>Apache Maven Source Plugin</name>
@@ -61,7 +61,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-source-plugin.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-source-plugin.git</developerConnection>
     <url>https://github.com/apache/maven-source-plugin/tree/${project.scm.tag}</url>
-    <tag>HEAD</tag>
+    <tag>maven-source-plugin-3.2.0</tag>
   </scm>
   <issueManagement>
     <system>JIRA</system>
