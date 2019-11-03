@@ -45,6 +45,8 @@
         <artifactId>maven-source-plugin</artifactId>
         <configuration>
           <archive>
+            <!-- remove Maven descriptor pom.xml and pom.properties since they vary given platform line ending -->
+            <addMavenDescriptor>false</addMavenDescriptor>
             <manifest>
               <!-- remove default entries since it contains "Created-By: Maven Source Plugin <current plugin version>"
                    which varies over time in this IT -->
