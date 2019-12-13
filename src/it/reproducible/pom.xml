@@ -63,6 +63,16 @@
           <altDeploymentRepository>mine::default::file://${basedir}/target/repo</altDeploymentRepository>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <version>1.5</version>
+        <configuration>
+          <resourceBundles>
+            <resourceBundle>org.apache:apache-jar-resource-bundle:1.4</resourceBundle>
+          </resourceBundles>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

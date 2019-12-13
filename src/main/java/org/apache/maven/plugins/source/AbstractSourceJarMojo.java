@@ -280,9 +280,6 @@ public abstract class AbstractSourceJarMojo
         }
 
         MavenArchiver archiver = createArchiver();
-        
-        // configure for Reproducible Builds based on outputTimestamp value
-        archiver.configureReproducible( outputTimestamp );
 
         for ( MavenProject pItem : theProjects )
         {
@@ -312,6 +309,7 @@ public abstract class AbstractSourceJarMojo
                 archiver.setOutputFile( outputFile );
                 archive.setForced( forceCreation );
 
+                getLog().debug( "create archive " + outputFile );
                 archiver.createArchive( session, project, archive );
             }
             catch ( IOException e )
@@ -424,6 +422,10 @@ public abstract class AbstractSourceJarMojo
         archiver.setCreatedBy( "Maven Source Plugin", "org.apache.maven.plugins", "maven-source-plugin" );
         archiver.setBuildJdkSpecDefaultEntry( false );
 
+        
+        // configure for Reproducible Builds based on outputTimestamp value
+        archiver.configureReproducible( outputTimestamp );
+
         if ( project.getBuild() != null )
         {
             List<Resource> resources = project.getBuild().getResources();
@@ -454,6 +456,7 @@ public abstract class AbstractSourceJarMojo
     {
         try
         {
+            getLog().debug( "add directory " + sourceDirectory + " to archiver" );
             // archiver.addFileSet( fileSet );
             archiver.addDirectory( sourceDirectory, pIncludes, pExcludes );
         }
@@ -477,6 +480,7 @@ public abstract class AbstractSourceJarMojo
     {
         try
         {
+            getLog().debug( "add directory " + sourceDirectory + " to archiver with prefix " + prefix );
             archiver.addDirectory( sourceDirectory, prefix, pIncludes, pExcludes );
         }
         catch ( ArchiverException e )
