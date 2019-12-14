@@ -81,6 +81,7 @@ under the License.
   <properties>
     <javaVersion>7</javaVersion>
     <mavenVersion>3.0</mavenVersion>
+    <project.build.outputTimestamp>2019-12-08T19:56:05Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
@@ -155,6 +156,27 @@ under the License.
         </configuration>
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <!-- Reproducible Builds plugins: to be removed once parent POM updated to 34 -->
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.0</version><!-- not fully reproducible: see MSOURCES-123 -->
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>3.0.0-M1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <profiles>
