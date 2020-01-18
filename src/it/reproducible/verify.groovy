@@ -72,4 +72,4 @@ zipFile.close();
 String buf = r.toString()
 println buf
 
-assert buf.startsWith( "reproducible-1.0-sources.jar sha1 = 3a3687b063cfc164fbbccd1b9573b4232f540e8a" )
+assert buf.startsWith( "reproducible-1.0-sources.jar sha1 = 450428f14d590dadc0af38826b8154f8c31b24ca" )
