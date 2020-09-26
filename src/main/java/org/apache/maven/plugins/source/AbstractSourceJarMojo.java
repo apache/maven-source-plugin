@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.maven.archiver.MavenArchiveConfiguration;
@@ -259,7 +260,7 @@ public abstract class AbstractSourceJarMojo
     {
         if ( !"pom".equals( p.getPackaging() ) )
         {
-            packageSources( Arrays.asList( p ) );
+            packageSources( Collections.singletonList( p ) );
         }
     }
 
@@ -534,7 +535,7 @@ public abstract class AbstractSourceJarMojo
             combinedIncludes.addAll( Arrays.asList( DEFAULT_INCLUDES ) );
         }
 
-        return combinedIncludes.toArray( new String[combinedIncludes.size()] );
+        return combinedIncludes.toArray( new String[0] );
     }
 
     /**
@@ -569,7 +570,7 @@ public abstract class AbstractSourceJarMojo
             combinedExcludes.addAll( Arrays.asList( DEFAULT_EXCLUDES ) );
         }
 
-        return combinedExcludes.toArray( new String[combinedExcludes.size()] );
+        return combinedExcludes.toArray( new String[0] );
     }
 
     /**

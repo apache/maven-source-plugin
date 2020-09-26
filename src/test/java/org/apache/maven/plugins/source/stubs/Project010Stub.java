@@ -64,11 +64,11 @@ public class Project010Stub
             setBuild( build );
 
             String basedir = getBasedir().getAbsolutePath();
-            List<String> compileSourceRoots = new ArrayList<String>();
+            List<String> compileSourceRoots = new ArrayList<>();
             compileSourceRoots.add( basedir + "/target/test-classes/unit/project-010/src/main/java" );
             setCompileSourceRoots( compileSourceRoots );
 
-            List<String> testCompileSourceRoots = new ArrayList<String>();
+            List<String> testCompileSourceRoots = new ArrayList<>();
             testCompileSourceRoots.add( basedir + "/target/test-classes/unit/project-010/src/test/java" );
             setTestCompileSourceRoots( testCompileSourceRoots );
 

@@ -190,7 +190,7 @@ public abstract class AbstractSourcePluginTestCase
         {
             assertTrue( entries.hasMoreElements() );
 
-            Set<String> expected = new TreeSet<String>( Arrays.asList( expectedFiles ) );
+            Set<String> expected = new TreeSet<>( Arrays.asList( expectedFiles ) );
 
             while ( entries.hasMoreElements() )
             {
