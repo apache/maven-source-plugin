@@ -312,19 +312,7 @@ public abstract class AbstractSourceJarMojo
                 getLog().debug( "create archive " + outputFile );
                 archiver.createArchive( session, project, archive );
             }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "Error creating source archive: " + e.getMessage(), e );
-            }
-            catch ( ArchiverException e )
-            {
-                throw new MojoExecutionException( "Error creating source archive: " + e.getMessage(), e );
-            }
-            catch ( DependencyResolutionRequiredException e )
-            {
-                throw new MojoExecutionException( "Error creating source archive: " + e.getMessage(), e );
-            }
-            catch ( ManifestException e )
+            catch ( IOException | ArchiverException | DependencyResolutionRequiredException | ManifestException e )
             {
                 throw new MojoExecutionException( "Error creating source archive: " + e.getMessage(), e );
             }
@@ -528,7 +516,7 @@ public abstract class AbstractSourceJarMojo
      */
     private String[] getCombinedIncludes( List<String> additionalIncludes )
     {
-        List<String> combinedIncludes = new ArrayList<String>();
+        List<String> combinedIncludes = new ArrayList<>();
 
         if ( includes != null && includes.length > 0 )
         {
@@ -559,7 +547,7 @@ public abstract class AbstractSourceJarMojo
 
     private String[] getCombinedExcludes( List<String> additionalExcludes )
     {
-        List<String> combinedExcludes = new ArrayList<String>();
+        List<String> combinedExcludes = new ArrayList<>();
 
         if ( useDefaultExcludes )
         {
