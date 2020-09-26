@@ -37,6 +37,7 @@ public class AggregatorSourceJarMojo
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute()
         throws MojoExecutionException
     {
