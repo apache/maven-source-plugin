@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
@@ -320,6 +321,16 @@ public abstract class AbstractSourceJarMojo
 
             if ( attach )
             {
+                for ( Artifact attachedArtifact : project.getAttachedArtifacts() )
+                {
+                    if ( isAlreadyAttached( attachedArtifact, project, getClassifier() ) )
+                    {
+                        getLog().error( "We have duplicated artifacts attached." );
+                        throw new MojoExecutionException( "Presumably you have configured maven-source-plugn "
+                                + "to execute twice times in your build. You have to configure a classifier "
+                                + "for at least on of them." );
+                    }
+                }
                 projectHelper.attachArtifact( project, getType(), getClassifier(), outputFile );
             }
             else
@@ -331,6 +342,16 @@ public abstract class AbstractSourceJarMojo
         {
             getLog().info( "No sources in project. Archive not created." );
         }
+    }
+
+    private boolean isAlreadyAttached( Artifact artifact, MavenProject checkProject, String classifier )
+    {
+        return artifact.getType().equals( getType() )
+                && artifact.getGroupId().equals( checkProject.getGroupId() )
+                && artifact.getArtifactId().equals( checkProject.getArtifactId() )
+                && artifact.getVersion().equals( checkProject.getVersion() )
+                && ( artifact.getClassifier() != null
+                ? artifact.getClassifier().equals( classifier ) : false );
     }
 
     /**
