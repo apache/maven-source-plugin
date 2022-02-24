@@ -25,7 +25,7 @@ under the License.
   <parent>
     <artifactId>maven-plugins</artifactId>
     <groupId>org.apache.maven.plugins</groupId>
-    <version>34</version>
+    <version>35-SNAPSHOT</version>
     <relativePath>../../pom/maven/maven-plugins/pom.xml</relativePath>
   </parent>
 
@@ -111,7 +111,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
-      <version>3.5.0</version>
+      <version>3.5.2</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
