@@ -25,12 +25,12 @@ under the License.
   <parent>
     <artifactId>maven-plugins</artifactId>
     <groupId>org.apache.maven.plugins</groupId>
-    <version>34</version>
-    <relativePath>../../pom/maven/maven-plugins/pom.xml</relativePath>
+    <version>36</version>
+    <relativePath/>
   </parent>
 
   <artifactId>maven-source-plugin</artifactId>
-  <version>3.2.2-SNAPSHOT</version>
+  <version>3.3.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Apache Maven Source Plugin</name>
@@ -69,7 +69,7 @@ under the License.
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://ci-builds.apache.org/job/Maven/job/maven-box/job/maven-source-plugin/</url>
+    <url>https://ci-maven.apache.org/job/Maven/job/maven-box/job/maven-source-plugin/</url>
   </ciManagement>
   <distributionManagement>
     <site>
@@ -79,8 +79,8 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>7</javaVersion>
-    <mavenVersion>3.0</mavenVersion>
+    <javaVersion>8</javaVersion>
+    <mavenVersion>3.2.5</mavenVersion>
     <project.build.outputTimestamp>2019-12-16T18:10:36Z</project.build.outputTimestamp>
   </properties>
 
@@ -89,16 +89,25 @@ under the License.
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- dependencies to annotations -->
@@ -115,19 +124,14 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-archiver</artifactId>
-      <version>4.2.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.3.0</version>
+      <version>3.4.2</version>
     </dependency>
   
     <dependency>
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
-      <version>2.1</version>
+      <version>3.3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -156,27 +160,6 @@ under the License.
         </configuration>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <!-- Reproducible Builds plugins: to be removed once parent POM updated to 34 -->
-        <plugin>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.0</version><!-- not fully reproducible: see MSOURCES-123 -->
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.3.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>3.0.0-M1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
 
   <profiles>
