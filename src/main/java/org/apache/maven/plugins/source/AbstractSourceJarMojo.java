@@ -432,9 +432,8 @@ public abstract class AbstractSourceJarMojo
         archiver.setCreatedBy( "Maven Source Plugin", "org.apache.maven.plugins", "maven-source-plugin" );
         archiver.setBuildJdkSpecDefaultEntry( false );
 
-        
         // configure for Reproducible Builds based on outputTimestamp value
-        archiver.configureReproducible( outputTimestamp );
+        archiver.configureReproducibleBuild( outputTimestamp );
 
         if ( project.getBuild() != null )
         {
@@ -442,7 +441,6 @@ public abstract class AbstractSourceJarMojo
 
             for ( Resource r : resources )
             {
-
                 if ( r.getDirectory().endsWith( "maven-shared-archive-resources" ) )
                 {
                     addDirectory( archiver.getArchiver(), new File( r.getDirectory() ), getCombinedIncludes( null ),

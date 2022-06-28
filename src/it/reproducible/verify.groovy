@@ -18,6 +18,8 @@
  * under the License.
  */
 
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 import org.apache.commons.compress.archivers.zip.*;
 
 File deployDir = new File( basedir, 'target/repo/org/apache/maven/its/reproducible/1.0' )
@@ -63,13 +65,21 @@ long javaToDosTime( Date d )
            d.getSeconds() >> 1;
 }
 
+// Normalize to UTC
+long millis = Instant.parse( "2019-08-21T18:28:52Z" ).toEpochMilli();
+Calendar cal = Calendar.getInstance();
+cal.setTimeInMillis( millis );
+millis = millis - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+FileTime timestamp = FileTime.fromMillis( millis );
+
 for ( ZipArchiveEntry zae : zipFile.getEntries() )
 {
     r.append( sprintf( "%d %4d (%3d) %8x %d %<tF %<tT %<tz %d %6o %s %s; %s\n", zae.getMethod(), zae.getSize(), zae.getCompressedSize(), zae.getCrc(), zae.getTime(), javaToDosTime( zae.getLastModifiedDate() ), zae.getUnixMode(), zae.getName(), ( zae.getComment() == null ) ? '-' : zae.getComment(), describeExtra( zae.getExtraFields() ) ) )
+    assert timestamp.equals( zae.getLastModifiedTime() );
 }
 zipFile.close();
 
 String buf = r.toString()
 println buf
 
-assert buf.startsWith( "reproducible-1.0-sources.jar sha1 = 3a3687b063cfc164fbbccd1b9573b4232f540e8a" )
+assert buf.startsWith( "reproducible-1.0-sources.jar sha1 = f159379802c1f0dc1083af21352286b09d364519" )
