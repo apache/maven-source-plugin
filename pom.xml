@@ -161,6 +161,7 @@ under the License.
         <configuration>
           <excludes combine.children="append">
             <exclude>src/it/reproducible/src/main/resources/**/*.txt</exclude>
+            <exclude>.github/*.md</exclude>
           </excludes>
         </configuration>
       </plugin>
