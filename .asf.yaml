@@ -29,7 +29,7 @@ github:
     merge: false
     rebase: true
   autolink_jira:
-    - MSOURCE
+    - MSOURCES
 notifications:
   commits: commits@maven.apache.org
   issues: issues@maven.apache.org
