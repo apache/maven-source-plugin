@@ -41,6 +41,7 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.archiver.jar.ManifestException;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -420,8 +421,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             throws MojoExecutionException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver");
-            // archiver.addFileSet( fileSet );
-            archiver.addDirectory(sourceDirectory, pIncludes, pExcludes);
+            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory).includeExclude(pIncludes, pExcludes));
         } catch (ArchiverException e) {
             throw new MojoExecutionException("Error adding directory to source archive.", e);
         }
@@ -440,7 +440,8 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             throws MojoExecutionException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver with prefix " + prefix);
-            archiver.addDirectory(sourceDirectory, prefix, pIncludes, pExcludes);
+            archiver.addFileSet(
+                    DefaultFileSet.fileSet(sourceDirectory).prefixed(prefix).includeExclude(pIncludes, pExcludes));
         } catch (ArchiverException e) {
             throw new MojoExecutionException("Error adding directory to source archive.", e);
         }
@@ -486,12 +487,12 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             combinedIncludes.addAll(Arrays.asList(includes));
         }
 
-        if (additionalIncludes != null && additionalIncludes.size() > 0) {
+        if (additionalIncludes != null && !additionalIncludes.isEmpty()) {
             combinedIncludes.addAll(additionalIncludes);
         }
 
         // If there are no other includes, use the default.
-        if (combinedIncludes.size() == 0) {
+        if (combinedIncludes.isEmpty()) {
             combinedIncludes.addAll(Arrays.asList(DEFAULT_INCLUDES));
         }
 
@@ -516,11 +517,11 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             combinedExcludes.addAll(Arrays.asList(excludes));
         }
 
-        if (additionalExcludes != null && additionalExcludes.size() > 0) {
+        if (additionalExcludes != null && !additionalExcludes.isEmpty()) {
             combinedExcludes.addAll(additionalExcludes);
         }
 
-        if (combinedExcludes.size() == 0) {
+        if (combinedExcludes.isEmpty()) {
             combinedExcludes.addAll(Arrays.asList(DEFAULT_EXCLUDES));
         }
 
