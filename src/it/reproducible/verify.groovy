@@ -82,4 +82,5 @@ zipFile.close();
 String buf = r.toString()
 println buf
 
-assert buf.startsWith( "reproducible-1.0-sources.jar sha1 = f159379802c1f0dc1083af21352286b09d364519" )
+// on Windows executable bit is not set
+assert buf.startsWith( "reproducible-1.0-sources.jar sha1 = f159379802c1f0dc1083af21352286b09d364519" ) || buf.startsWith( "reproducible-1.0-sources.jar sha1 = e14cb3b37b6d82db1728886d1959ad0cd79708d8" )
