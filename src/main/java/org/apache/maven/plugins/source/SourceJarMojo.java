@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.source;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.source;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.source;
 
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -29,10 +28,8 @@ import org.apache.maven.plugins.annotations.Mojo;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @since 2.0.3
  */
-@Mojo( name = "jar", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true )
-@Execute( phase = LifecyclePhase.GENERATE_SOURCES )
-public class SourceJarMojo
-    extends SourceJarNoForkMojo
-{
+@Mojo(name = "jar", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
+@Execute(phase = LifecyclePhase.GENERATE_SOURCES)
+public class SourceJarMojo extends SourceJarNoForkMojo {
     // no op
 }

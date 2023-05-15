@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.source.stubs;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.source.stubs;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.source.stubs;
 
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.versioning.VersionRange;
@@ -26,9 +25,7 @@ import org.apache.maven.plugin.testing.stubs.ArtifactStub;
 /**
  * @author <a href="mailto:oching@exist.com">Maria Odea Ching</a>
  */
-public class SourcePluginArtifactStub
-    extends ArtifactStub
-{
+public class SourcePluginArtifactStub extends ArtifactStub {
 
     private String groupId;
 
@@ -46,77 +43,63 @@ public class SourcePluginArtifactStub
 
     private ArtifactHandler handler;
 
-    public SourcePluginArtifactStub( String groupId, String artifactId, String version, String type, String classifier )
-    {
+    public SourcePluginArtifactStub(String groupId, String artifactId, String version, String type, String classifier) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
         this.type = type;
         this.classifier = classifier;
-        versionRange = VersionRange.createFromVersion( version );
+        versionRange = VersionRange.createFromVersion(version);
     }
 
-    public void setGroupId( String groupId )
-    {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
-    public String getGroupId()
-    {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setArtifactId( String artifactId )
-    {
+    public void setArtifactId(String artifactId) {
         this.artifactId = artifactId;
     }
 
-    public String getArtifactId()
-    {
+    public String getArtifactId() {
         return artifactId;
     }
 
-    public void setVersion( String version )
-    {
+    public void setVersion(String version) {
         this.version = version;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public void setType( String packaging )
-    {
+    public void setType(String packaging) {
         this.type = packaging;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setClassifier( String classifier )
-    {
+    public void setClassifier(String classifier) {
         this.classifier = classifier;
     }
 
-    public String getClassifier()
-    {
+    public String getClassifier() {
         return classifier;
     }
 
-    public boolean hasClassifier()
-    {
+    public boolean hasClassifier() {
         return classifier != null;
     }
 
-    public String getId()
-    {
+    public String getId() {
         String id = groupId + ":" + artifactId + ":" + type + ":";
 
-        if ( hasClassifier() )
-        {
+        if (hasClassifier()) {
             id = id + getClassifier() + ":";
         }
 
@@ -125,34 +108,27 @@ public class SourcePluginArtifactStub
         return id;
     }
 
-    public VersionRange getVersionRange()
-    {
+    public VersionRange getVersionRange() {
         return versionRange;
     }
 
-    public void setVersionRange( VersionRange versionRange )
-    {
+    public void setVersionRange(VersionRange versionRange) {
         this.versionRange = versionRange;
     }
 
-    public String getBaseVersion()
-    {
+    public String getBaseVersion() {
         return baseVersion;
     }
 
-    public void setBaseVersion( String baseVersion )
-    {
+    public void setBaseVersion(String baseVersion) {
         this.baseVersion = baseVersion;
     }
 
-    public ArtifactHandler getArtifactHandler()
-    {
+    public ArtifactHandler getArtifactHandler() {
         return handler;
     }
 
-    public void setArtifactHandler( ArtifactHandler handler )
-    {
+    public void setArtifactHandler(ArtifactHandler handler) {
         this.handler = handler;
     }
-
 }
