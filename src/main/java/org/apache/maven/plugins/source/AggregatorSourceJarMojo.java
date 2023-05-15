@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.source;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.source;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.source;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Execute;
@@ -29,21 +28,16 @@ import org.apache.maven.plugins.annotations.Mojo;
  *
  * @since 2.0.3
  */
-@Mojo( name = "aggregate", defaultPhase = LifecyclePhase.PACKAGE, aggregator = true, threadSafe = true )
-@Execute( phase = LifecyclePhase.GENERATE_SOURCES )
-public class AggregatorSourceJarMojo
-    extends SourceJarMojo
-{
+@Mojo(name = "aggregate", defaultPhase = LifecyclePhase.PACKAGE, aggregator = true, threadSafe = true)
+@Execute(phase = LifecyclePhase.GENERATE_SOURCES)
+public class AggregatorSourceJarMojo extends SourceJarMojo {
     /**
      * {@inheritDoc}
      */
     @Override
-    public void execute()
-        throws MojoExecutionException
-    {
-        if ( "pom".equals( getProject().getPackaging() ) )
-        {
-            packageSources( reactorProjects );
+    public void execute() throws MojoExecutionException {
+        if ("pom".equals(getProject().getPackaging())) {
+            packageSources(reactorProjects);
         }
     }
 }

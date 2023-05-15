@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.source;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.source;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.source;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,31 +34,26 @@ import org.apache.maven.project.MavenProject;
  * @author pgier
  * @since 2.1
  */
-@Mojo( name = "jar-no-fork", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true )
-public class SourceJarNoForkMojo
-    extends AbstractSourceJarMojo
-{
+@Mojo(name = "jar-no-fork", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
+public class SourceJarNoForkMojo extends AbstractSourceJarMojo {
     /**
      * @since 2.2
      */
-    @Parameter( property = "maven.source.classifier", defaultValue = "sources" )
+    @Parameter(property = "maven.source.classifier", defaultValue = "sources")
     protected String classifier;
 
     /**
      * {@inheritDoc}
      */
-    protected List<String> getSources( MavenProject p )
-    {
+    protected List<String> getSources(MavenProject p) {
         return p.getCompileSourceRoots();
     }
 
     /**
      * {@inheritDoc}
      */
-    protected List<Resource> getResources( MavenProject p )
-    {
-        if ( excludeResources )
-        {
+    protected List<Resource> getResources(MavenProject p) {
+        if (excludeResources) {
             return Collections.emptyList();
         }
 
@@ -69,8 +63,7 @@ public class SourceJarNoForkMojo
     /**
      * {@inheritDoc}
      */
-    protected String getClassifier()
-    {
+    protected String getClassifier() {
         return classifier;
     }
 }
