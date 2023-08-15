@@ -307,8 +307,8 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
                     if (isAlreadyAttached(attachedArtifact, project, getClassifier())) {
                         getLog().error("We have duplicated artifacts attached.");
                         throw new MojoExecutionException("Presumably you have configured maven-source-plugin "
-                                + "to execute twice times in your build. You have to configure a classifier "
-                                + "for at least on of them.");
+                                + "to execute twice in your build. You have to configure a classifier "
+                                + "for at least one of them.");
                     }
                 }
                 projectHelper.attachArtifact(project, getType(), getClassifier(), outputFile);
