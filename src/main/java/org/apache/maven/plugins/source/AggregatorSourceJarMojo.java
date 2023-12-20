@@ -18,24 +18,24 @@
  */
 package org.apache.maven.plugins.source;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.api.plugin.MojoException;
+import org.apache.maven.api.plugin.annotations.Execute;
+import org.apache.maven.api.plugin.annotations.LifecyclePhase;
+import org.apache.maven.api.plugin.annotations.Mojo;
 
 /**
  * Aggregate sources for all modules in an aggregator project.
  *
  * @since 2.0.3
  */
-@Mojo(name = "aggregate", defaultPhase = LifecyclePhase.PACKAGE, aggregator = true, threadSafe = true)
+@Mojo(name = "aggregate", defaultPhase = LifecyclePhase.PACKAGE, aggregator = true)
 @Execute(phase = LifecyclePhase.GENERATE_SOURCES)
 public class AggregatorSourceJarMojo extends SourceJarMojo {
     /**
      * {@inheritDoc}
      */
     @Override
-    public void execute() throws MojoExecutionException {
+    public void execute() throws MojoException {
         if ("pom".equals(getProject().getPackaging())) {
             packageSources(reactorProjects);
         }
