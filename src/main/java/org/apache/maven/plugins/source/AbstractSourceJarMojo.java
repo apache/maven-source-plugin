@@ -19,28 +19,30 @@
 package org.apache.maven.plugins.source;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import jakarta.inject.Inject;
+import org.apache.maven.api.Artifact;
+import org.apache.maven.api.Project;
+import org.apache.maven.api.Session;
+import org.apache.maven.api.model.Resource;
+import org.apache.maven.api.plugin.Log;
+import org.apache.maven.api.plugin.Mojo;
+import org.apache.maven.api.plugin.MojoException;
+import org.apache.maven.api.plugin.annotations.Parameter;
+import org.apache.maven.api.services.ProjectManager;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Resource;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
-import org.codehaus.plexus.archiver.jar.ManifestException;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -49,7 +51,7 @@ import org.codehaus.plexus.util.FileUtils;
  *
  * @since 2.0.3
  */
-public abstract class AbstractSourceJarMojo extends AbstractMojo {
+public abstract class AbstractSourceJarMojo implements Mojo {
     private static final String[] DEFAULT_INCLUDES = new String[] {"**/**"};
 
     private static final String[] DEFAULT_EXCLUDES = new String[] {};
@@ -61,7 +63,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 2.1
      */
     @Parameter
-    private String[] includes;
+    protected String[] includes;
 
     /**
      * List of files to exclude. Specified as fileset patterns which are relative to the input directory whose contents
@@ -70,7 +72,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 2.1
      */
     @Parameter
-    private String[] excludes;
+    protected String[] excludes;
 
     /**
      * Exclude commonly excluded files such as SCM configuration. These are defined in the plexus
@@ -79,19 +81,19 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 2.1
      */
     @Parameter(property = "maven.source.useDefaultExcludes", defaultValue = "true")
-    private boolean useDefaultExcludes;
+    protected boolean useDefaultExcludes;
 
     /**
      * The Maven Project Object
      */
-    @Parameter(defaultValue = "${project}", readonly = true, required = true)
-    private MavenProject project;
+    @Inject
+    protected Project project;
 
     /**
      * The Jar archiver.
      */
-    @Component(role = Archiver.class, hint = "jar")
-    private JarArchiver jarArchiver;
+    @Inject
+    protected JarArchiver jarArchiver;
 
     /**
      * The archive configuration to use. See <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven
@@ -103,7 +105,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 2.1
      */
     @Parameter
-    private MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
+    protected MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
 
     /**
      * Path to the default MANIFEST file to use. It will be used if <code>useDefaultManifestFile</code> is set to
@@ -117,7 +119,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             readonly = false,
             required = true)
     // CHECKSTYLE_ON: LineLength
-    private File defaultManifestFile;
+    protected Path defaultManifestFile;
 
     /**
      * Set this to <code>true</code> to enable the use of the <code>defaultManifestFile</code>. <br/>
@@ -125,16 +127,16 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 2.1
      */
     @Parameter(property = "maven.source.useDefaultManifestFile", defaultValue = "false")
-    private boolean useDefaultManifestFile;
+    protected boolean useDefaultManifestFile;
 
     /**
-     * Specifies whether or not to attach the artifact to the project
+     * Specifies whether to attach the artifact to the project
      */
     @Parameter(property = "maven.source.attach", defaultValue = "true")
-    private boolean attach;
+    protected boolean attach;
 
     /**
-     * Specifies whether or not to exclude resources from the sources-jar. This can be convenient if your project
+     * Specifies whether to exclude resources from the sources-jar. This can be convenient if your project
      * includes large resources, such as images, and you don't want to include them in the sources-jar.
      *
      * @since 2.0.4
@@ -143,7 +145,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     protected boolean excludeResources;
 
     /**
-     * Specifies whether or not to include the POM file in the sources-jar.
+     * Specifies whether to include the POM file in the sources-jar.
      *
      * @since 2.1
      */
@@ -153,14 +155,14 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     /**
      * Used for attaching the source jar to the project.
      */
-    @Component
-    private MavenProjectHelper projectHelper;
+    @Inject
+    protected ProjectManager projectManager;
 
     /**
      * The directory where the generated archive file will be put.
      */
     @Parameter(defaultValue = "${project.build.directory}")
-    protected File outputDirectory;
+    protected Path outputDirectory;
 
     /**
      * The filename to be used for the generated archive file. For the source:jar goal, "-sources" is appended to this
@@ -173,7 +175,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * Contains the full list of projects in the reactor.
      */
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
-    protected List<MavenProject> reactorProjects;
+    protected List<Project> reactorProjects;
 
     /**
      * Whether creating the archive should be forced. If set to true, the jar will always be created. If set to false,
@@ -182,7 +184,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 2.1
      */
     @Parameter(property = "maven.source.forceCreation", defaultValue = "false")
-    private boolean forceCreation;
+    protected boolean forceCreation;
 
     /**
      * A flag used to disable the source procedure. This is primarily intended for usage from the command line to
@@ -191,13 +193,13 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 2.2
      */
     @Parameter(property = "maven.source.skip", defaultValue = "false")
-    private boolean skipSource;
+    protected boolean skipSource;
 
     /**
      * The Maven session.
      */
-    @Parameter(defaultValue = "${session}", readonly = true, required = true)
-    private MavenSession session;
+    @Inject
+    protected Session session;
 
     /**
      * Timestamp for reproducible output archive entries, either formatted as ISO 8601
@@ -207,16 +209,23 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
      * @since 3.2.0
      */
     @Parameter(defaultValue = "${project.build.outputTimestamp}")
-    private String outputTimestamp;
+    protected String outputTimestamp;
+
+    @Inject
+    protected Log log;
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
+    public Log getLog() {
+        return log;
+    }
+
     /**
      * {@inheritDoc}
      */
-    public void execute() throws MojoExecutionException {
+    public void execute() throws MojoException {
         if (skipSource) {
             getLog().info("Skipping source per configuration.");
             return;
@@ -235,37 +244,37 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     protected abstract String getClassifier();
 
     /**
-     * @param p {@link MavenProject} not null
+     * @param p {@link Project} not null
      * @return the compile or test sources
-     * @throws MojoExecutionException in case of an error.
+     * @throws MojoException in case of an error.
      */
-    protected abstract List<String> getSources(MavenProject p) throws MojoExecutionException;
+    protected abstract List<String> getSources(Project p) throws MojoException;
 
     /**
-     * @param p {@link MavenProject} not null
+     * @param p {@link Project} not null
      * @return the compile or test resources
-     * @throws MojoExecutionException in case of an error.
+     * @throws MojoException in case of an error.
      */
-    protected abstract List<Resource> getResources(MavenProject p) throws MojoExecutionException;
+    protected abstract List<Resource> getResources(Project p) throws MojoException;
 
     /**
-     * @param p {@link MavenProject}
-     * @throws MojoExecutionException in case of an error.
+     * @param p {@link Project}
+     * @throws MojoException in case of an error.
      */
-    protected void packageSources(MavenProject p) throws MojoExecutionException {
+    protected void packageSources(Project p) throws MojoException {
         if (!"pom".equals(p.getPackaging())) {
             packageSources(Collections.singletonList(p));
         }
     }
 
     /**
-     * @param theProjects {@link MavenProject}
-     * @throws MojoExecutionException in case of an error.
+     * @param theProjects {@link Project}
+     * @throws MojoException in case of an error.
      */
-    protected void packageSources(List<MavenProject> theProjects) throws MojoExecutionException {
-        if (project.getArtifact().getClassifier() != null) {
+    protected void packageSources(List<Project> theProjects) throws MojoException {
+        if (!project.getArtifact().getClassifier().isEmpty()) {
             getLog().warn("NOT adding sources to artifacts with classifier as Maven only supports one classifier "
-                    + "per artifact. Current artifact [" + project.getArtifact().getId() + "] has a ["
+                    + "per artifact. Current artifact [" + project.getArtifact().key() + "] has a ["
                     + project.getArtifact().getClassifier() + "] classifier.");
 
             return;
@@ -273,8 +282,8 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
 
         MavenArchiver archiver = createArchiver();
 
-        for (MavenProject pItem : theProjects) {
-            MavenProject subProject = getProject(pItem);
+        for (Project pItem : theProjects) {
+            Project subProject = getProject(pItem);
 
             if ("pom".equals(subProject.getPackaging())) {
                 continue;
@@ -285,33 +294,40 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
 
         if (archiver.getArchiver().getResources().hasNext() || forceCreation) {
 
-            if (useDefaultManifestFile && defaultManifestFile.exists() && archive.getManifestFile() == null) {
-                getLog().info("Adding existing MANIFEST to archive. Found under: " + defaultManifestFile.getPath());
+            if (useDefaultManifestFile && Files.exists(defaultManifestFile) && archive.getManifestFile() == null) {
+                getLog().info("Adding existing MANIFEST to archive. Found under: " + defaultManifestFile);
                 archive.setManifestFile(defaultManifestFile);
             }
 
-            File outputFile = new File(outputDirectory, finalName + "-" + getClassifier() + getExtension());
+            Path outputFile = outputDirectory.resolve(finalName + "-" + getClassifier() + getExtension());
 
             try {
-                archiver.setOutputFile(outputFile);
+                archiver.setOutputFile(outputFile.toFile());
                 archive.setForced(forceCreation);
 
                 getLog().debug("create archive " + outputFile);
                 archiver.createArchive(session, project, archive);
-            } catch (IOException | ArchiverException | DependencyResolutionRequiredException | ManifestException e) {
-                throw new MojoExecutionException("Error creating source archive: " + e.getMessage(), e);
+            } catch (ArchiverException e) {
+                throw new MojoException("Error creating source archive: " + e.getMessage(), e);
             }
 
             if (attach) {
-                for (Artifact attachedArtifact : project.getAttachedArtifacts()) {
-                    if (isAlreadyAttached(attachedArtifact, project, getClassifier())) {
+                Artifact artifact = session.createArtifact(
+                        project.getGroupId(),
+                        project.getArtifactId(),
+                        project.getVersion(),
+                        getClassifier(),
+                        null,
+                        getType());
+                for (Artifact attachedArtifact : projectManager.getAttachedArtifacts(project)) {
+                    if (Objects.equals(attachedArtifact, artifact)) {
                         getLog().error("We have duplicated artifacts attached.");
-                        throw new MojoExecutionException("Presumably you have configured maven-source-plugin "
+                        throw new MojoException("Presumably you have configured maven-source-plugin "
                                 + "to execute twice in your build. You have to configure a classifier "
                                 + "for at least one of them.");
                     }
                 }
-                projectHelper.attachArtifact(project, getType(), getClassifier(), outputFile);
+                projectManager.attachArtifact(project, artifact, outputFile);
             } else {
                 getLog().info("NOT adding java-sources to attached artifacts list.");
             }
@@ -320,43 +336,36 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
         }
     }
 
-    private boolean isAlreadyAttached(Artifact artifact, MavenProject checkProject, String classifier) {
-        return artifact.getType().equals(getType())
-                && artifact.getGroupId().equals(checkProject.getGroupId())
-                && artifact.getArtifactId().equals(checkProject.getArtifactId())
-                && artifact.getVersion().equals(checkProject.getVersion())
-                && (artifact.getClassifier() != null ? artifact.getClassifier().equals(classifier) : false);
-    }
-
     /**
-     * @param p {@link MavenProject}
+     * @param project {@link Project}
      * @param archiver {@link Archiver}
-     * @throws MojoExecutionException in case of an error.
+     * @throws MojoException in case of an error.
      */
-    protected void archiveProjectContent(MavenProject p, Archiver archiver) throws MojoExecutionException {
+    protected void archiveProjectContent(Project project, Archiver archiver) throws MojoException {
         if (includePom) {
             try {
-                archiver.addFile(p.getFile(), p.getFile().getName());
+                File pom = project.getPomPath().get().toFile();
+                archiver.addFile(pom, pom.getName());
             } catch (ArchiverException e) {
-                throw new MojoExecutionException("Error adding POM file to target jar file.", e);
+                throw new MojoException("Error adding POM file to target jar file.", e);
             }
         }
 
-        for (String s : getSources(p)) {
+        for (String s : getSources(project)) {
 
-            File sourceDirectory = new File(s);
+            Path sourceDirectory = Paths.get(s);
 
-            if (sourceDirectory.exists()) {
+            if (Files.exists(sourceDirectory)) {
                 addDirectory(archiver, sourceDirectory, getCombinedIncludes(null), getCombinedExcludes(null));
             }
         }
 
         // MAPI: this should be taken from the resources plugin
-        for (Resource resource : getResources(p)) {
+        for (Resource resource : getResources(project)) {
 
-            File sourceDirectory = new File(resource.getDirectory());
+            Path sourceDirectory = Paths.get(resource.getDirectory());
 
-            if (!sourceDirectory.exists()) {
+            if (!Files.exists(sourceDirectory)) {
                 continue;
             }
 
@@ -382,9 +391,9 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
 
     /**
      * @return {@link MavenArchiver}
-     * @throws MojoExecutionException in case of an error.
+     * @throws MojoException in case of an error.
      */
-    protected MavenArchiver createArchiver() throws MojoExecutionException {
+    protected MavenArchiver createArchiver() throws MojoException {
         MavenArchiver archiver = new MavenArchiver();
         archiver.setArchiver(jarArchiver);
         archiver.setCreatedBy("Maven Source Plugin", "org.apache.maven.plugins", "maven-source-plugin");
@@ -394,13 +403,14 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
         archiver.configureReproducibleBuild(outputTimestamp);
 
         if (project.getBuild() != null) {
-            List<Resource> resources = project.getBuild().getResources();
+            List<org.apache.maven.api.model.Resource> resources =
+                    project.getBuild().getResources();
 
-            for (Resource r : resources) {
+            for (org.apache.maven.api.model.Resource r : resources) {
                 if (r.getDirectory().endsWith("maven-shared-archive-resources")) {
                     addDirectory(
                             archiver.getArchiver(),
-                            new File(r.getDirectory()),
+                            Paths.get(r.getDirectory()),
                             getCombinedIncludes(null),
                             getCombinedExcludes(null));
                 }
@@ -412,38 +422,39 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
 
     /**
      * @param archiver {@link Archiver}
-     * @param sourceDirectory {@link File}
+     * @param sourceDirectory {@link Path}
      * @param pIncludes The list of includes.
      * @param pExcludes The list of excludes.
-     * @throws MojoExecutionException in case of an error.
+     * @throws MojoException in case of an error.
      */
-    protected void addDirectory(Archiver archiver, File sourceDirectory, String[] pIncludes, String[] pExcludes)
-            throws MojoExecutionException {
+    protected void addDirectory(Archiver archiver, Path sourceDirectory, String[] pIncludes, String[] pExcludes)
+            throws MojoException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver");
-            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory).includeExclude(pIncludes, pExcludes));
+            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile()).includeExclude(pIncludes, pExcludes));
         } catch (ArchiverException e) {
-            throw new MojoExecutionException("Error adding directory to source archive.", e);
+            throw new MojoException("Error adding directory to source archive.", e);
         }
     }
 
     /**
      * @param archiver {@link Archiver}
-     * @param sourceDirectory {@link File}
+     * @param sourceDirectory {@link Path}
      * @param prefix The prefix.
      * @param pIncludes the includes.
      * @param pExcludes the excludes.
-     * @throws MojoExecutionException in case of an error.
+     * @throws MojoException in case of an error.
      */
     protected void addDirectory(
-            Archiver archiver, File sourceDirectory, String prefix, String[] pIncludes, String[] pExcludes)
-            throws MojoExecutionException {
+            Archiver archiver, Path sourceDirectory, String prefix, String[] pIncludes, String[] pExcludes)
+            throws MojoException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver with prefix " + prefix);
-            archiver.addFileSet(
-                    DefaultFileSet.fileSet(sourceDirectory).prefixed(prefix).includeExclude(pIncludes, pExcludes));
+            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile())
+                    .prefixed(prefix)
+                    .includeExclude(pIncludes, pExcludes));
         } catch (ArchiverException e) {
-            throw new MojoExecutionException("Error adding directory to source archive.", e);
+            throw new MojoException("Error adding directory to source archive.", e);
         }
     }
 
@@ -455,15 +466,11 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     }
 
     /**
-     * @param p {@link MavenProject}
+     * @param p {@link Project}
      * @return The execution projet.
      */
-    protected MavenProject getProject(MavenProject p) {
-        if (p.getExecutionProject() != null) {
-            return p.getExecutionProject();
-        }
-
-        return p;
+    protected Project getProject(Project p) {
+        return projectManager.getExecutionProject(p).orElse(p);
     }
 
     /**
@@ -531,14 +538,14 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     /**
      * @return The current project.
      */
-    protected MavenProject getProject() {
+    protected Project getProject() {
         return project;
     }
 
     /**
-     * @param project {@link MavenProject}
+     * @param project {@link Project}
      */
-    protected void setProject(MavenProject project) {
+    protected void setProject(Project project) {
         this.project = project;
     }
 }

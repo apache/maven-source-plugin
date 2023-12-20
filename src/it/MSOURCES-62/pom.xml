@@ -41,7 +41,6 @@ under the License.
               <phase>package</phase>
               <configuration>
                 <archive>
-                  <index>true</index>
                   <addMavenDescriptor>false</addMavenDescriptor>
                   <compress>true</compress>
                   <manifestEntries>
