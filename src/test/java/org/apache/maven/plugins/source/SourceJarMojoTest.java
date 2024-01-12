@@ -183,6 +183,10 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
             Project p = iom.getArgument(0, Project.class);
             return Collections.singletonList(p.getModel().getBuild().getSourceDirectory());
         });
+        when(projectManager.getResources(any())).thenAnswer(iom -> {
+            Project p = iom.getArgument(0, Project.class);
+            return p.getBuild().getResources();
+        });
         return session;
     }
 }

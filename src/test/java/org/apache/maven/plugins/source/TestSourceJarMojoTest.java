@@ -139,6 +139,10 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
             Project p = iom.getArgument(0, Project.class);
             return Collections.singletonList(p.getModel().getBuild().getTestSourceDirectory());
         });
+        when(projectManager.getTestResources(any())).thenAnswer(iom -> {
+            Project p = iom.getArgument(0, Project.class);
+            return p.getBuild().getTestResources();
+        });
         return session;
     }
 }

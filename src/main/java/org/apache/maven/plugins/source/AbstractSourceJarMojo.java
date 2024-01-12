@@ -262,7 +262,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
      * @throws MojoException in case of an error.
      */
     protected void packageSources(Project p) throws MojoException {
-        if (!"pom".equals(p.getPackaging())) {
+        if (!"pom".equals(p.getPackaging()) && !"bom".equals(p.getPackaging())) {
             packageSources(Collections.singletonList(p));
         }
     }
@@ -285,7 +285,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
         for (Project pItem : theProjects) {
             Project subProject = getProject(pItem);
 
-            if ("pom".equals(subProject.getPackaging())) {
+            if ("pom".equals(subProject.getPackaging()) || "bom".equals(subProject.getPackaging())) {
                 continue;
             }
 
