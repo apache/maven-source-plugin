@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
@@ -303,15 +304,24 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             }
 
             if (attach) {
+                boolean requiresAttach = true;
                 for (Artifact attachedArtifact : project.getAttachedArtifacts()) {
-                    if (isAlreadyAttached(attachedArtifact, project, getClassifier())) {
-                        getLog().error("We have duplicated artifacts attached.");
-                        throw new MojoExecutionException("Presumably you have configured maven-source-plugin "
-                                + "to execute twice in your build. You have to configure a classifier "
-                                + "for at least one of them.");
+                    Artifact previouslyAttached = getPreviouslyAttached(attachedArtifact, project, getClassifier());
+                    if (previouslyAttached != null) {
+                        if (!outputFile.equals(previouslyAttached.getFile())) {
+                            getLog().error("Artifact already attached to a file " + previouslyAttached.getFile()
+                                    + ": attach to " + outputFile + " should be done with another classifier");
+                            throw new MojoExecutionException("Presumably you have configured maven-source-plugin "
+                                    + "to execute twice in your build to different output files. "
+                                    + "You have to configure a classifier for at least one of them.");
+                        }
+                        requiresAttach = false;
+                        getLog().info("Artifact already attached: ignoring re-attach");
                     }
                 }
-                projectHelper.attachArtifact(project, getType(), getClassifier(), outputFile);
+                if (requiresAttach) {
+                    projectHelper.attachArtifact(project, getType(), getClassifier(), outputFile);
+                }
             } else {
                 getLog().info("NOT adding java-sources to attached artifacts list.");
             }
@@ -320,12 +330,14 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
         }
     }
 
-    private boolean isAlreadyAttached(Artifact artifact, MavenProject checkProject, String classifier) {
+    private Artifact getPreviouslyAttached(Artifact artifact, MavenProject checkProject, String classifier) {
         return artifact.getType().equals(getType())
-                && artifact.getGroupId().equals(checkProject.getGroupId())
-                && artifact.getArtifactId().equals(checkProject.getArtifactId())
-                && artifact.getVersion().equals(checkProject.getVersion())
-                && (artifact.getClassifier() != null ? artifact.getClassifier().equals(classifier) : false);
+                        && artifact.getGroupId().equals(checkProject.getGroupId())
+                        && artifact.getArtifactId().equals(checkProject.getArtifactId())
+                        && artifact.getVersion().equals(checkProject.getVersion())
+                        && Objects.equals(artifact.getClassifier(), classifier)
+                ? artifact
+                : null;
     }
 
     /**
