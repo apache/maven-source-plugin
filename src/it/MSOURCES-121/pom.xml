@@ -29,9 +29,10 @@
 
   <name>Test for multiple attachments of files</name>
 	<description>This build should fail based on the duplicate
-   execution with  the same configuration. This will errornously
-   add the classifier/file twice times.
+   execution with the same configuration. This will erroneously
+   add the classifier/file twice.
    MSOURCES-121.
+   update with MSOURCES-141: do not fail but detect and not add twice
   </description>
 
   <properties>
