@@ -20,6 +20,7 @@ package org.apache.maven.plugins.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -306,17 +307,22 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             if (attach) {
                 boolean requiresAttach = true;
                 for (Artifact attachedArtifact : project.getAttachedArtifacts()) {
-                    Artifact previouslyAttached = getPreviouslyAttached(attachedArtifact, project, getClassifier());
-                    if (previouslyAttached != null) {
-                        if (!outputFile.equals(previouslyAttached.getFile())) {
-                            getLog().error("Artifact already attached to a file " + previouslyAttached.getFile()
-                                    + ": attach to " + outputFile + " should be done with another classifier");
+                    Artifact previouslyAttachedArtifact =
+                            getPreviouslyAttached(attachedArtifact, project, getClassifier());
+                    if (previouslyAttachedArtifact != null) {
+                        File previouslyAttachedFile = previouslyAttachedArtifact.getFile();
+                        // trying to attache the same file/path or not?
+                        if (!outputFile.equals(previouslyAttachedFile)) {
+                            getLog().error("Artifact " + previouslyAttachedArtifact.getId()
+                                    + " already attached to a file " + relative(previouslyAttachedFile) + ": attach to "
+                                    + relative(outputFile) + " should be done with another classifier");
                             throw new MojoExecutionException("Presumably you have configured maven-source-plugin "
                                     + "to execute twice in your build to different output files. "
                                     + "You have to configure a classifier for at least one of them.");
                         }
                         requiresAttach = false;
-                        getLog().info("Artifact already attached: ignoring re-attach");
+                        getLog().info("Artifact " + previouslyAttachedArtifact.getId() + " already attached to "
+                                + relative(outputFile) + ": ignoring same re-attach (same artifact, same file)");
                     }
                 }
                 if (requiresAttach) {
@@ -328,6 +334,11 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
         } else {
             getLog().info("No sources in project. Archive not created.");
         }
+    }
+
+    private String relative(File to) {
+        Path basedir = project.getBasedir().getAbsoluteFile().toPath();
+        return basedir.relativize(to.getAbsoluteFile().toPath()).toString();
     }
 
     private Artifact getPreviouslyAttached(Artifact artifact, MavenProject checkProject, String classifier) {
