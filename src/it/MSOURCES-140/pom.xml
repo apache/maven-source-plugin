@@ -27,13 +27,8 @@
   <artifactId>jar-no-fork</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>Test for multiple attachments of files</name>
-	<description>This build should fail based on the duplicate
-   execution with the same configuration. This will erroneously
-   add the classifier/file twice.
-   MSOURCES-121.
-   update with MSOURCES-141: do not fail but detect and not add twice
-  </description>
+  <name>Test for multiple attachments of one file caused by  multiple runs in one session</name>
+  <description>mvn package clean install should not fail</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -47,19 +42,10 @@
         <version>@project.version@</version>
         <executions>
           <execution>
-            <id>attach-sources-1</id>
+            <id>attach-sources</id>
             <goals>
               <goal>jar-no-fork</goal>
             </goals>
-          </execution>
-          <execution>
-            <id>attach-sources-2</id>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-            <configuration>
-              <finalName>${project.build.finalName}-secondary</finalName>
-            </configuration>
           </execution>
         </executions>
       </plugin>
