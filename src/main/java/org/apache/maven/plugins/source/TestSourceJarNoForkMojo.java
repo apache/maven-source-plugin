@@ -18,14 +18,15 @@
  */
 package org.apache.maven.plugins.source;
 
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.maven.model.Resource;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.api.Project;
+import org.apache.maven.api.ProjectScope;
+import org.apache.maven.api.model.Resource;
+import org.apache.maven.api.plugin.annotations.Mojo;
+import org.apache.maven.api.plugin.annotations.Parameter;
 
 /**
  * This goal bundles all the test sources into a jar archive.  This goal functions the same
@@ -34,7 +35,7 @@ import org.apache.maven.project.MavenProject;
  *
  * @since 2.1
  */
-@Mojo(name = "test-jar-no-fork", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
+@Mojo(name = "test-jar-no-fork", defaultPhase = "package")
 public class TestSourceJarNoForkMojo extends AbstractSourceJarMojo {
     /**
      * @since 2.2
@@ -45,19 +46,19 @@ public class TestSourceJarNoForkMojo extends AbstractSourceJarMojo {
     /**
      * {@inheritDoc}
      */
-    protected List<String> getSources(MavenProject p) {
-        return p.getTestCompileSourceRoots();
+    protected List<Path> getSources(Project p) {
+        return projectManager.getCompileSourceRoots(p, ProjectScope.TEST);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected List<Resource> getResources(MavenProject p) {
+    protected List<Resource> getResources(Project p) {
         if (excludeResources) {
             return Collections.emptyList();
         }
 
-        return p.getTestResources();
+        return projectManager.getResources(p, ProjectScope.TEST);
     }
 
     /**

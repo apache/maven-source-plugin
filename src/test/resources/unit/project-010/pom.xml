@@ -36,12 +36,12 @@ under the License.
   <build>
     <resources>
       <resource>
-        <directory>target/test-classes/unit/project-010/src/main/resources</directory>
+        <directory>src/main/resources</directory>
       </resource>
     </resources>
     <testResources>
       <testResource>
-        <directory>target/test-classes/unit/project-010/src/test/resources</directory>
+        <directory>src/test/resources</directory>
       </testResource>
     </testResources>
     <plugins>
@@ -49,8 +49,6 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugins.source.stubs.Project010Stub"/>
-          <outputDirectory>${basedir}/target/test/unit/project-010/target</outputDirectory>
           <finalName>maven-source-plugin-test-project-010-99.0</finalName>
           <reactorProjects />
           <archive>

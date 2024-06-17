@@ -35,7 +35,7 @@ under the License.
   <build>
     <resources>
       <resource>
-        <directory>target/test-classes/unit/project-007/src/main/resources</directory>
+        <directory>src/main/resources</directory>
         <includes>
           <include>templates/**</include>
         </includes>
@@ -46,8 +46,6 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugins.source.stubs.Project007Stub"/>
-          <outputDirectory>${basedir}/target/test/unit/project-007/target</outputDirectory>
           <finalName>maven-source-plugin-test-project-007-99.0</finalName>
           <reactorProjects />
         </configuration>
