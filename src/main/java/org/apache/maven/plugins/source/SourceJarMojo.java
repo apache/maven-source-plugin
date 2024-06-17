@@ -18,9 +18,8 @@
  */
 package org.apache.maven.plugins.source;
 
-import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.api.plugin.annotations.Execute;
+import org.apache.maven.api.plugin.annotations.Mojo;
 
 /**
  * This plugin bundles all the sources into a jar archive.
@@ -28,8 +27,8 @@ import org.apache.maven.plugins.annotations.Mojo;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @since 2.0.3
  */
-@Mojo(name = "jar", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
-@Execute(phase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "jar", defaultPhase = "package")
+@Execute(phase = "generate-sources")
 public class SourceJarMojo extends SourceJarNoForkMojo {
     // no op
 }

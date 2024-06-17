@@ -35,7 +35,7 @@ under the License.
   <build>
     <resources>
       <resource>
-        <directory>target/test-classes/unit/project-003/src/main/resources</directory>
+        <directory>src/main/resources</directory>
         <excludes>
           <exclude>excluded-file.txt</exclude>
         </excludes>
@@ -43,7 +43,7 @@ under the License.
     </resources>
     <testResources>
       <testResource>
-        <directory>target/test-classes/unit/project-003/src/test/resources</directory>
+        <directory>src/test/resources</directory>
         <excludes>
           <exclude>excluded-file.txt</exclude>
         </excludes>
@@ -54,8 +54,6 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugins.source.stubs.Project003Stub"/>
-          <outputDirectory>${basedir}/target/test/unit/project-003/target</outputDirectory>
           <finalName>maven-source-plugin-test-project-003-99.0</finalName>
           <reactorProjects />
         </configuration>

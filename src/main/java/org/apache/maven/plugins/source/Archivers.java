@@ -16,8 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.source;
 
-File buildLog = new File( basedir, 'build.log' )
+import org.apache.maven.api.di.Named;
+import org.apache.maven.api.di.Provides;
+import org.apache.maven.api.di.Singleton;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 
-var fs = File.separatorChar == '\\' ? "\\\\" : "/"
-assert buildLog.text =~ /\[ERROR\] Artifact org.apache.maven.its.sources:jar-no-fork:jar:sources:1.0-SNAPSHOT already attached to a file target${fs}jar-no-fork-1.0-SNAPSHOT-sources.jar: attach to target${fs}jar-no-fork-1.0-SNAPSHOT-secondary-sources.jar should be done with another classifier/
+@Named
+public class Archivers {
+
+    @Provides
+    @Singleton
+    @Named("jar")
+    static JarArchiver createJarArchiver() {
+        return new JarArchiver();
+    }
+}
