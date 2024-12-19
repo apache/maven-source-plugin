@@ -67,26 +67,25 @@ public abstract class AbstractSourcePluginTestCase {
     }
 
     protected void assertJarContent(final File jarFile, final String[] expectedFiles) throws IOException {
-        ZipFile jar = new ZipFile(jarFile);
-        Enumeration<? extends ZipEntry> entries = jar.entries();
+        try (ZipFile jar = new ZipFile(jarFile)) {
+            Enumeration<? extends ZipEntry> entries = jar.entries();
 
-        if (expectedFiles.length == 0) {
-            assertFalse(entries.hasMoreElements(), "Jar file should not contain any entry");
-        } else {
-            assertTrue(entries.hasMoreElements());
+            if (expectedFiles.length == 0) {
+                assertFalse(entries.hasMoreElements(), "Jar file should not contain any entry");
+            } else {
+                assertTrue(entries.hasMoreElements());
 
-            Set<String> expected = new TreeSet<>(Arrays.asList(expectedFiles));
+                Set<String> expected = new TreeSet<>(Arrays.asList(expectedFiles));
 
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
+                while (entries.hasMoreElements()) {
+                    ZipEntry entry = entries.nextElement();
 
-                assertTrue(expected.remove(entry.getName()), "Not expecting " + entry.getName() + " in " + jarFile);
+                    assertTrue(expected.remove(entry.getName()), "Not expecting " + entry.getName() + " in " + jarFile);
+                }
+
+                assertTrue(expected.isEmpty(), "Missing entries " + expected + " in " + jarFile);
             }
-
-            assertTrue(expected.isEmpty(), "Missing entries " + expected + " in " + jarFile);
         }
-
-        jar.close();
     }
 
     protected File getTestTargetDir(String projectName) {
