@@ -36,9 +36,4 @@ under the License.
       <item name="Configuring Source Plugin" href="/examples/configureplugin.html"/>
     </menu>
   </body>
-
-  <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-fluido-skin</artifactId>
-  </skin>
 </project>
