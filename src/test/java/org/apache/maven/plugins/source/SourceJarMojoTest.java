@@ -29,15 +29,16 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
     }
 
     private String[] addMavenDescriptor(String project, String[] listOfElements) {
-        final String METAINF = "META-INF/";
-        final String MAVENSOURCE = "maven/source/maven-source-plugin-test-";
-        String[] result = new String[listOfElements.length + 5];
-        System.arraycopy(listOfElements, 0, result, 0, listOfElements.length);
-        result[listOfElements.length] = METAINF + "maven/";
-        result[listOfElements.length + 1] = METAINF + "maven/source/";
-        result[listOfElements.length + 2] = METAINF + MAVENSOURCE + project + "/";
-        result[listOfElements.length + 3] = METAINF + MAVENSOURCE + project + "/pom.properties";
-        result[listOfElements.length + 4] = METAINF + MAVENSOURCE + project + "/pom.xml";
+        final String metainf = "META-INF/";
+        final String mavensource = "maven/source/maven-source-plugin-test-";
+        int length = listOfElements.length;
+        String[] result = new String[length + 5];
+        System.arraycopy(listOfElements, 0, result, 0, length);
+        result[length] = metainf + "maven/";
+        result[length + 1] = metainf + "maven/source/";
+        result[length + 2] = metainf + mavensource + project + "/";
+        result[length + 3] = metainf + mavensource + project + "/pom.properties";
+        result[length + 4] = metainf + mavensource + project + "/pom.xml";
         return result;
     }
 
