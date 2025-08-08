@@ -48,16 +48,16 @@ import static org.mockito.Mockito.when;
 public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
 
     private String[] addMavenDescriptor(String project, String... listOfElements) {
-        final String METAINF = "META-INF/";
-        final String MAVENSOURCE = "maven/source/maven-source-plugin-test-";
+        final String metainf = "META-INF/";
+        final String mavensource = "maven/source/maven-source-plugin-test-";
         int length = listOfElements.length;
         String[] result = new String[length + 5];
         System.arraycopy(listOfElements, 0, result, 0, length);
-        result[length] = METAINF + "maven/";
-        result[length + 1] = METAINF + "maven/source/";
-        result[length + 2] = METAINF + MAVENSOURCE + project + "/";
-        result[length + 3] = METAINF + MAVENSOURCE + project + "/pom.properties";
-        result[length + 4] = METAINF + MAVENSOURCE + project + "/pom.xml";
+        result[length] = metainf + "maven/";
+        result[length + 1] = metainf + "maven/source/";
+        result[length + 2] = metainf + mavensource + project + "/";
+        result[length + 3] = metainf + mavensource + project + "/pom.properties";
+        result[length + 4] = metainf + mavensource + project + "/pom.xml";
         return result;
     }
 

@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
-    <version>42</version>
+    <version>44</version>
     <relativePath />
   </parent>
 
@@ -81,7 +81,6 @@ under the License.
     <mavenVersion>4.0.0-beta-3</mavenVersion>
 
     <guiceVersion>6.0.0</guiceVersion>
-    <junitVersion>5.10.2</junitVersion>
     <mavenArchiverVersion>4.0.0-beta-1</mavenArchiverVersion>
     <mavenPluginPluginVersion>4.0.0-beta-1</mavenPluginPluginVersion>
     <mavenPluginTestingVersion>4.0.0-beta-1</mavenPluginTestingVersion>
@@ -176,7 +175,6 @@ under the License.
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>${junitVersion}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
