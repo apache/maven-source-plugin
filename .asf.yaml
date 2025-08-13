@@ -32,6 +32,7 @@ github:
     - MSOURCES
   protected_branches:
     master: { }
+    maven-source-plugin-3.x: {}
   pull_requests:
     del_branch_on_merge: true
   features:
