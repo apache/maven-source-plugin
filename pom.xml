@@ -83,7 +83,7 @@ under the License.
     <guiceVersion>6.0.0</guiceVersion>
     <mavenArchiverVersion>4.0.0-beta-1</mavenArchiverVersion>
     <mavenPluginPluginVersion>4.0.0-beta-1</mavenPluginPluginVersion>
-    <mavenPluginTestingVersion>4.0.0-beta-1</mavenPluginTestingVersion>
+    <mavenPluginTestingVersion>4.0.0-beta-4</mavenPluginTestingVersion>
     <mockitoVersion>5.12.0</mockitoVersion>
     <plexusArchiverVersion>4.9.2</plexusArchiverVersion>
     <version.maven-plugin-tools>${mavenPluginPluginVersion}</version.maven-plugin-tools>
