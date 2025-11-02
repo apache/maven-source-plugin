@@ -45,13 +45,13 @@ import static org.mockito.Mockito.when;
  * @author <a href="mailto:oching@exist.com">Maria Odea Ching</a>
  */
 @MojoTest
-public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
+class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
 
     @Test
     @InjectMojo(goal = "test-jar")
     @Basedir("${basedir}/target/test-classes/unit/project-001")
     @MojoParameter(name = "classifier", value = "test-sources")
-    public void testDefaultConfiguration(AbstractSourceJarMojo mojo) throws Exception {
+    void defaultConfiguration(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");
@@ -75,7 +75,7 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
     @InjectMojo(goal = "test-jar")
     @Basedir("${basedir}/target/test-classes/unit/project-003")
     @MojoParameter(name = "classifier", value = "test-sources")
-    public void testExcludes(AbstractSourceJarMojo mojo) throws Exception {
+    void excludes(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");
@@ -99,7 +99,7 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
     @InjectMojo(goal = "test-jar")
     @Basedir("${basedir}/target/test-classes/unit/project-005")
     @MojoParameter(name = "classifier", value = "test-sources")
-    public void testNoSources(AbstractSourceJarMojo mojo) throws Exception {
+    void noSources(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         // Now make sure that no archive got created
@@ -113,7 +113,7 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
     @InjectMojo(goal = "test-jar")
     @Basedir("${basedir}/target/test-classes/unit/project-010")
     @MojoParameter(name = "classifier", value = "test-sources")
-    public void testIncludeMavenDescriptorWhenExplicitlyConfigured(AbstractSourceJarMojo mojo) throws Exception {
+    void includeMavenDescriptorWhenExplicitlyConfigured(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");

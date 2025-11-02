@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
  * @author <a href="mailto:oching@exist.com">Maria Odea Ching</a>
  */
 @MojoTest
-public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
+class SourceJarMojoTest extends AbstractSourcePluginTestCase {
 
     private String[] addMavenDescriptor(String project, String... listOfElements) {
         final String metainf = "META-INF/";
@@ -65,7 +65,7 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
     @InjectMojo(goal = "jar")
     @Basedir("${basedir}/target/test-classes/unit/project-001")
     @MojoParameter(name = "classifier", value = "sources")
-    void testDefaultConfiguration(AbstractSourceJarMojo mojo) throws Exception {
+    void defaultConfiguration(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");
@@ -85,7 +85,7 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
     @Test
     @InjectMojo(goal = "jar")
     @Basedir("${basedir}/target/test-classes/unit/project-003")
-    public void testExcludes(AbstractSourceJarMojo mojo) throws Exception {
+    void excludes(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");
@@ -105,7 +105,7 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
     @Test
     @InjectMojo(goal = "jar")
     @Basedir("${basedir}/target/test-classes/unit/project-005")
-    public void testNoSources(AbstractSourceJarMojo mojo) throws Exception {
+    void noSources(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         // Now make sure that no archive got created
@@ -118,7 +118,7 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
     @Test
     @InjectMojo(goal = "jar")
     @Basedir("${basedir}/target/test-classes/unit/project-007")
-    public void testIncludes(AbstractSourceJarMojo mojo) throws Exception {
+    void includes(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");
@@ -139,7 +139,7 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
     @Test
     @InjectMojo(goal = "jar")
     @Basedir("${basedir}/target/test-classes/unit/project-009")
-    public void testIncludePom(AbstractSourceJarMojo mojo) throws Exception {
+    void includePom(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");
@@ -160,7 +160,7 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
     @Test
     @InjectMojo(goal = "jar")
     @Basedir("${basedir}/target/test-classes/unit/project-010")
-    public void testIncludeMavenDescriptorWhenExplicitlyConfigured(AbstractSourceJarMojo mojo) throws Exception {
+    void includeMavenDescriptorWhenExplicitlyConfigured(AbstractSourceJarMojo mojo) throws Exception {
         mojo.execute();
 
         File target = new File(getBasedir(), "target");
