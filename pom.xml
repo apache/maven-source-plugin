@@ -80,6 +80,8 @@ under the License.
     <javaVersion>8</javaVersion>
     <mavenVersion>3.9.11</mavenVersion>
     <project.build.outputTimestamp>2024-03-30T01:49:10Z</project.build.outputTimestamp>
+
+    <version.maven-invoker-plugin>3.9.1</version.maven-invoker-plugin>
   </properties>
 
   <dependencyManagement>
