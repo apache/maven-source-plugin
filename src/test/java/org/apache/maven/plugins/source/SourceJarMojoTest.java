@@ -19,6 +19,8 @@
 package org.apache.maven.plugins.source;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author <a href="mailto:oching@exist.com">Maria Odea Ching</a>
@@ -121,5 +123,18 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
                     "META-INF/"
                 }),
                 "sources");
+    }
+
+    public void testIncludesAdditionalSourcesFromMain() throws Exception {
+        // must include MRJar configuration from the compiler plugin
+        doTestProjectWithSourceArchive(
+            "msources-144",
+            addMavenDescriptor("msources-144", new String[] {
+                    "SomeClass.java",
+                    "META-INF/versions/9/SomeClass.java"
+                }
+            ),
+            "sources"
+        );
     }
 }
