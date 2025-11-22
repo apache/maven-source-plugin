@@ -28,7 +28,7 @@ under the License.
   </parent>
 
   <artifactId>maven-source-plugin</artifactId>
-  <version>3.4.1-SNAPSHOT</version>
+  <version>3.3.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Apache Maven Source Plugin</name>
@@ -79,7 +79,7 @@ under the License.
   <properties>
     <javaVersion>8</javaVersion>
     <mavenVersion>3.9.11</mavenVersion>
-    <project.build.outputTimestamp>2025-11-22T22:24:48Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-03-30T01:49:10Z</project.build.outputTimestamp>
 
     <version.maven-invoker-plugin>3.9.1</version.maven-invoker-plugin>
   </properties>
