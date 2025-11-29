@@ -56,8 +56,6 @@ import org.codehaus.plexus.util.FileUtils;
 public abstract class AbstractSourceJarMojo implements Mojo {
     private static final String[] DEFAULT_INCLUDES = new String[] {"**/**"};
 
-    private static final String[] DEFAULT_EXCLUDES = new String[] {};
-
     /**
      * List of files to include. Specified as fileset patterns which are relative to the input directory whose contents
      * is being packaged into the JAR.
@@ -542,7 +540,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
 
     /**
      * Combines the user parameter {@link #excludes}, the default excludes from plexus FileUtils, and the contents of
-     * the parameter addionalExcludes.
+     * the parameter additionalExcludes.
      *
      * @param additionalExcludes Additional excludes to add to the array
      * @return The combined list of excludes.
@@ -560,10 +558,6 @@ public abstract class AbstractSourceJarMojo implements Mojo {
 
         if (additionalExcludes != null && !additionalExcludes.isEmpty()) {
             combinedExcludes.addAll(additionalExcludes);
-        }
-
-        if (combinedExcludes.isEmpty()) {
-            combinedExcludes.addAll(Arrays.asList(DEFAULT_EXCLUDES));
         }
 
         return combinedExcludes.toArray(new String[0]);
