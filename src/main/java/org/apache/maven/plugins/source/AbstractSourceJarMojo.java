@@ -501,7 +501,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
 
     /**
      * @param p {@link Project}
-     * @return The execution projet.
+     * @return the execution project
      */
     protected Project getProject(Project p) {
         return projectManager.getExecutionProject(p).orElse(p);
@@ -542,10 +542,10 @@ public abstract class AbstractSourceJarMojo implements Mojo {
 
     /**
      * Combines the user parameter {@link #excludes}, the default excludes from plexus FileUtils, and the contents of
-     * the parameter addionalExcludes.
+     * the parameter additionalExcludes.
      *
-     * @param additionalExcludes Additional excludes to add to the array
-     * @return The combined list of excludes.
+     * @param additionalExcludes additional excludes to add to the array
+     * @return the combined list of excludes
      */
     private String[] getCombinedExcludes(List<String> additionalExcludes) {
         List<String> combinedExcludes = new ArrayList<>();
