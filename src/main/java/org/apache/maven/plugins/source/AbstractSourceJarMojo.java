@@ -363,16 +363,6 @@ public abstract class AbstractSourceJarMojo implements Mojo {
         return basedir.relativize(to.toAbsolutePath()).toString();
     }
 
-    private Artifact getPreviouslyAttached(Artifact artifact, Project checkProject, String classifier) {
-        return artifact.getExtension().equals(getExtension())
-                        && artifact.getGroupId().equals(checkProject.getGroupId())
-                        && artifact.getArtifactId().equals(checkProject.getArtifactId())
-                        && artifact.getVersion().toString().equals(checkProject.getVersion())
-                        && Objects.equals(artifact.getClassifier(), classifier)
-                ? artifact
-                : null;
-    }
-
     /**
      * @param project {@link Project}
      * @param archiver {@link Archiver}
