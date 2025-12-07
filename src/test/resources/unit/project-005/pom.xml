@@ -27,25 +27,11 @@ under the License.
   <name>Maven</name>
   <!-- POM packaging, no archive should be created -->
   <packaging>pom</packaging>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <configuration>
-          <project implementation="org.apache.maven.plugins.source.stubs.Project005Stub"/>
-          <outputDirectory>${basedir}/target/test/unit/project-005/target</outputDirectory>
-          <finalName>maven-source-plugin-test-project-005-99.0</finalName>
-          <reactorProjects/>
-        </configuration>
       </plugin>
     </plugins>
   </build>

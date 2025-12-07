@@ -18,81 +18,102 @@
  */
 package org.apache.maven.plugins.source;
 
+import javax.inject.Inject;
+
 import java.io.File;
+
+import org.apache.maven.api.di.Provides;
+import org.apache.maven.api.plugin.testing.Basedir;
+import org.apache.maven.api.plugin.testing.InjectMojo;
+import org.apache.maven.api.plugin.testing.MojoTest;
+import org.apache.maven.plugins.source.stubs.ProjectStub;
+import org.apache.maven.project.MavenProject;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author <a href="mailto:oching@exist.com">Maria Odea Ching</a>
  */
-public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
+@MojoTest
+class TestSourceJarMojoTest extends AbstractSourcePluginTest {
 
-    protected String getGoal() {
-        return "test-jar";
+    @TempDir
+    private File tempDir;
+
+    @Inject
+    private MavenProject project;
+
+    @Provides
+    @SuppressWarnings("unused")
+    private MavenProject projectProvides() {
+        return new ProjectStub(tempDir);
     }
 
-    public void testDefaultConfiguration() throws Exception {
-        doTestProjectWithTestSourceArchive(
-                "project-001",
-                new String[] {
-                    "test-default-configuration.properties",
-                    "foo/project001/AppTest.java",
-                    "foo/project001/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/",
-                    "META-INF/maven/",
-                    "META-INF/maven/source/",
-                    "META-INF/maven/source/maven-source-plugin-test-project-001/",
-                    "META-INF/maven/source/maven-source-plugin-test-project-001/pom.properties",
-                    "META-INF/maven/source/maven-source-plugin-test-project-001/pom.xml"
-                },
-                "test-sources");
+    @Test
+    @InjectMojo(goal = "test-jar")
+    @Basedir("/unit/project-001")
+    void testDefaultConfiguration(TestSourceJarMojo mojo) throws Exception {
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertTestSourceArchive(target);
+        assertJarContent(
+                getTestSourceArchive(target),
+                addMavenDescriptor(
+                        "test-default-configuration.properties",
+                        "foo/project001/AppTest.java",
+                        "foo/project001/",
+                        "foo/"));
     }
 
-    public void testExcludes() throws Exception {
-        doTestProjectWithTestSourceArchive(
-                "project-003",
-                new String[] {
-                    "test-default-configuration.properties",
-                    "foo/project003/AppTest.java",
-                    "foo/project003/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/",
-                    "META-INF/maven/",
-                    "META-INF/maven/source/",
-                    "META-INF/maven/source/maven-source-plugin-test-project-003/",
-                    "META-INF/maven/source/maven-source-plugin-test-project-003/pom.properties",
-                    "META-INF/maven/source/maven-source-plugin-test-project-003/pom.xml"
-                },
-                "test-sources");
+    @Test
+    @InjectMojo(goal = "test-jar")
+    @Basedir("/unit/project-003")
+    void testExcludes(TestSourceJarMojo mojo) throws Exception {
+        project.getTestResources().get(0).addExclude("excluded-file.txt");
+
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertTestSourceArchive(target);
+        assertJarContent(
+                getTestSourceArchive(target),
+                addMavenDescriptor(
+                        "test-default-configuration.properties",
+                        "foo/project003/AppTest.java",
+                        "foo/project003/",
+                        "foo/"));
     }
 
-    public void testNoSources() throws Exception {
-        executeMojo("project-005", "test-sources");
+    @Test
+    @InjectMojo(goal = "test-jar")
+    @Basedir("/unit/project-005")
+    void testNoSources(TestSourceJarMojo mojo) throws Exception {
+        mojo.execute();
 
         // Now make sure that no archive got created
-        final File expectedFile = getTestTargetDir("project-005");
+        File expectedFile = new File(tempDir, "target");
         assertFalse(
-                "Test source archive should not have been created[" + expectedFile.getAbsolutePath() + "]",
-                expectedFile.exists());
+                expectedFile.exists(),
+                "Test source archive should not have been created[" + expectedFile.getAbsolutePath() + "]");
     }
 
-    public void testIncludeMavenDescriptorWhenExplicitlyConfigured() throws Exception {
-        doTestProjectWithTestSourceArchive(
-                "project-010",
-                new String[] {
-                    "test-default-configuration.properties",
-                    "foo/project010/AppTest.java",
-                    "foo/project010/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/",
-                    "META-INF/maven/",
-                    "META-INF/maven/source/",
-                    "META-INF/maven/source/maven-source-plugin-test-project-010/",
-                    "META-INF/maven/source/maven-source-plugin-test-project-010/pom.xml",
-                    "META-INF/maven/source/maven-source-plugin-test-project-010/pom" + ".properties"
-                },
-                "test-sources");
+    @Test
+    @InjectMojo(goal = "test-jar")
+    @Basedir("/unit/project-010")
+    void testIncludeMavenDescriptorWhenExplicitlyConfigured(AbstractSourceJarMojo mojo) throws Exception {
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertTestSourceArchive(target);
+        assertJarContent(
+                getTestSourceArchive(target),
+                addMavenDescriptor(
+                        "test-default-configuration.properties",
+                        "foo/project010/AppTest.java",
+                        "foo/project010/",
+                        "foo/"));
     }
 }
