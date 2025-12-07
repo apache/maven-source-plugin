@@ -18,108 +18,136 @@
  */
 package org.apache.maven.plugins.source;
 
+import javax.inject.Inject;
+
 import java.io.File;
+
+import org.apache.maven.api.di.Provides;
+import org.apache.maven.api.plugin.testing.Basedir;
+import org.apache.maven.api.plugin.testing.InjectMojo;
+import org.apache.maven.api.plugin.testing.MojoParameter;
+import org.apache.maven.api.plugin.testing.MojoTest;
+import org.apache.maven.plugins.source.stubs.ProjectStub;
+import org.apache.maven.project.MavenProject;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author <a href="mailto:oching@exist.com">Maria Odea Ching</a>
  */
-public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
-    protected String getGoal() {
-        return "jar";
+@MojoTest
+class SourceJarMojoTest extends AbstractSourcePluginTest {
+
+    @TempDir
+    private File tempDir;
+
+    @Inject
+    private MavenProject project;
+
+    @Provides
+    @SuppressWarnings("unused")
+    private MavenProject projectProvides() {
+        return new ProjectStub(tempDir);
     }
 
-    private String[] addMavenDescriptor(String project, String[] listOfElements) {
-        final String metainf = "META-INF/";
-        final String mavensource = "maven/source/maven-source-plugin-test-";
-        int length = listOfElements.length;
-        String[] result = new String[length + 5];
-        System.arraycopy(listOfElements, 0, result, 0, length);
-        result[length] = metainf + "maven/";
-        result[length + 1] = metainf + "maven/source/";
-        result[length + 2] = metainf + mavensource + project + "/";
-        result[length + 3] = metainf + mavensource + project + "/pom.properties";
-        result[length + 4] = metainf + mavensource + project + "/pom.xml";
-        return result;
+    @Test
+    @InjectMojo(goal = "jar")
+    @Basedir("/unit/project-001")
+    void testDefaultConfiguration(SourceJarMojo mojo) throws Exception {
+
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertSourceArchive(target);
+        assertJarContent(
+                getSourceArchive(target),
+                addMavenDescriptor(
+                        "default-configuration.properties", "foo/project001/App.java", "foo/project001/", "foo/"));
     }
 
-    public void testDefaultConfiguration() throws Exception {
-        doTestProjectWithSourceArchive(
-                "project-001",
-                addMavenDescriptor("project-001", new String[] {
-                    "default-configuration.properties",
-                    "foo/project001/App.java",
-                    "foo/project001/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/"
-                }),
-                "sources");
+    @Test
+    @InjectMojo(goal = "jar")
+    @Basedir("/unit/project-003")
+    void testExcludes(SourceJarMojo mojo) throws Exception {
+
+        project.getResources().get(0).addExclude("excluded-file.txt");
+
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertSourceArchive(target);
+        assertJarContent(
+                getSourceArchive(target),
+                addMavenDescriptor(
+                        "default-configuration.properties", "foo/project003/App.java", "foo/project003/", "foo/"));
     }
 
-    public void testExcludes() throws Exception {
-        doTestProjectWithSourceArchive(
-                "project-003",
-                addMavenDescriptor("project-003", new String[] {
-                    "default-configuration.properties",
-                    "foo/project003/App.java",
-                    "foo/project003/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/"
-                }),
-                "sources");
-    }
+    @Test
+    @InjectMojo(goal = "jar")
+    @Basedir("/unit/project-005")
+    void testNoSources(SourceJarMojo mojo) throws Exception {
+        mojo.execute();
 
-    public void testNoSources() throws Exception {
-        executeMojo("project-005", "sources");
         // Now make sure that no archive got created
-        final File expectedFile = getTestTargetDir("project-005");
+        final File expectedFile = new File(tempDir, "target");
         assertFalse(
-                "Source archive should not have been created[" + expectedFile.getAbsolutePath() + "]",
-                expectedFile.exists());
+                expectedFile.exists(),
+                "Source archive should not have been created[" + expectedFile.getAbsolutePath() + "]");
     }
 
-    public void testIncludes() throws Exception {
-        doTestProjectWithSourceArchive(
-                "project-007",
-                addMavenDescriptor("project-007", new String[] {
-                    "templates/configuration-template.properties",
-                    "foo/project007/App.java",
-                    "templates/",
-                    "foo/project007/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/"
-                }),
-                "sources");
+    @Test
+    @InjectMojo(goal = "jar")
+    @Basedir("/unit/project-007")
+    void testIncludes(AbstractSourceJarMojo mojo) throws Exception {
+        project.getResources().get(0).addInclude("templates/**");
+
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertSourceArchive(target);
+        assertJarContent(
+                getSourceArchive(target),
+                addMavenDescriptor(
+                        "templates/configuration-template.properties",
+                        "foo/project007/App.java",
+                        "templates/",
+                        "foo/project007/",
+                        "foo/"));
     }
 
-    public void testIncludePom() throws Exception {
-        doTestProjectWithSourceArchive(
-                "project-009",
-                addMavenDescriptor("project-009", new String[] {
-                    "default-configuration.properties",
-                    "pom.xml",
-                    "foo/project009/App.java",
-                    "foo/project009/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/"
-                }),
-                "sources");
+    @Test
+    @InjectMojo(goal = "jar")
+    @Basedir("/unit/project-009")
+    @MojoParameter(name = "includePom", value = "true")
+    void testIncludePom(SourceJarMojo mojo) throws Exception {
+
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertSourceArchive(target);
+        assertJarContent(
+                getSourceArchive(target),
+                addMavenDescriptor(
+                        "default-configuration.properties",
+                        "pom.xml",
+                        "foo/project009/App.java",
+                        "foo/project009/",
+                        "foo/"));
     }
 
-    public void testIncludeMavenDescriptorWhenExplicitlyConfigured() throws Exception {
-        doTestProjectWithSourceArchive(
-                "project-010",
-                addMavenDescriptor("project-010", new String[] {
-                    "default-configuration.properties",
-                    "foo/project010/App.java",
-                    "foo/project010/",
-                    "foo/",
-                    "META-INF/MANIFEST.MF",
-                    "META-INF/"
-                }),
-                "sources");
+    @Test
+    @InjectMojo(goal = "jar")
+    @Basedir("/unit/project-010")
+    void testIncludeMavenDescriptorWhenExplicitlyConfigured(SourceJarMojo mojo) throws Exception {
+        mojo.execute();
+
+        File target = new File(tempDir, "target");
+        assertSourceArchive(target);
+        assertJarContent(
+                getSourceArchive(target),
+                addMavenDescriptor(
+                        "default-configuration.properties", "foo/project010/App.java", "foo/project010/", "foo/"));
     }
 }
