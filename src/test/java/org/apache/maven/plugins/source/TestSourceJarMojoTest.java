@@ -140,24 +140,17 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
         InternalSession session = SessionMock.getMockSession("target/local-repo");
         ProjectManager projectManager = mock(ProjectManager.class);
         when(session.getService(ProjectManager.class)).thenReturn(projectManager);
-        when(projectManager.getEnabledSourceRoots(any(), eq(ProjectScope.MAIN), any()))
+        when(projectManager.getEnabledSourceRoots(any(), eq(ProjectScope.TEST), any()))
                 .thenAnswer(iom -> {
                     Project p = iom.getArgument(0, Project.class);
                     DefaultSourceRoot sourceRoot = new DefaultSourceRoot(
                             ProjectScope.MAIN,
                             Language.JAVA_FAMILY,
                             Paths.get(getBasedir())
-                                    .resolve(p.getModel().getBuild().getSourceDirectory()));
+                                    .resolve(p.getModel().getBuild().getTestSourceDirectory()));
 
                     return Stream.of(sourceRoot);
                 });
-        //        when(projectManager.getResources(any(), eq(ProjectScope.TEST))).thenAnswer(iom -> {
-        //            Project p = iom.getArgument(0, Project.class);
-        //            return p.getBuild().getTestResources().stream()
-        //                    .map(r -> r.withDirectory(
-        //                            Paths.get(getBasedir()).resolve(r.getDirectory()).toString()))
-        //                    .toList();
-        //        });
         return session;
     }
 }

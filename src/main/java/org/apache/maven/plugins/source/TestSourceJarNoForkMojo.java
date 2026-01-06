@@ -48,7 +48,7 @@ public class TestSourceJarNoForkMojo extends AbstractSourceJarMojo {
      */
     protected List<Path> getSources(Project p) {
         return projectManager
-                .getEnabledSourceRoots(p, ProjectScope.TEST, null)
+                .getEnabledSourceRoots(p, ProjectScope.TEST, p.getLanguage())
                 .map(sourceRoot -> sourceRoot.directory())
                 .toList();
     }
