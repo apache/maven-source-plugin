@@ -47,18 +47,21 @@ public class TestSourceJarNoForkMojo extends AbstractSourceJarMojo {
      * {@inheritDoc}
      */
     protected List<Path> getSources(Project p) {
-        return projectManager.getCompileSourceRoots(p, ProjectScope.TEST);
+        return projectManager
+                .getEnabledSourceRoots(p, ProjectScope.TEST, null)
+                .map(sourceRoot -> sourceRoot.directory())
+                .toList();
     }
 
     /**
      * {@inheritDoc}
      */
     protected List<Resource> getResources(Project p) {
-        if (excludeResources) {
-            return Collections.emptyList();
-        }
+        //        if (excludeResources) {
+        return Collections.emptyList();
+        //        }
 
-        return projectManager.getResources(p, ProjectScope.TEST);
+        //        return projectManager.getResources(p, ProjectScope.TEST);
     }
 
     /**
