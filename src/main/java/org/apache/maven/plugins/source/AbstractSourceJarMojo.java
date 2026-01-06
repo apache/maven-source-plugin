@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.maven.api.Artifact;
+import org.apache.maven.api.ProducedArtifact;
 import org.apache.maven.api.Project;
 import org.apache.maven.api.Session;
 import org.apache.maven.api.Type;
@@ -40,8 +41,8 @@ import org.apache.maven.api.plugin.MojoException;
 import org.apache.maven.api.plugin.annotations.Parameter;
 import org.apache.maven.api.services.ArtifactManager;
 import org.apache.maven.api.services.ProjectManager;
-import org.apache.maven.archiver.MavenArchiveConfiguration;
-import org.apache.maven.archiver.MavenArchiver;
+import org.apache.maven.shared.archiver.MavenArchiveConfiguration;
+import org.apache.maven.shared.archiver.MavenArchiver;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -321,7 +322,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
             }
 
             if (attach) {
-                Artifact artifact = session.createArtifact(
+                ProducedArtifact artifact = session.createProducedArtifact(
                         project.getGroupId(),
                         project.getArtifactId(),
                         project.getVersion(),

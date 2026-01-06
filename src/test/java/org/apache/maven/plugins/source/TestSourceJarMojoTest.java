@@ -20,8 +20,9 @@ package org.apache.maven.plugins.source;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.stream.Stream;
 
+import org.apache.maven.api.Language;
 import org.apache.maven.api.Project;
 import org.apache.maven.api.ProjectScope;
 import org.apache.maven.api.di.Provides;
@@ -31,7 +32,8 @@ import org.apache.maven.api.plugin.testing.MojoParameter;
 import org.apache.maven.api.plugin.testing.MojoTest;
 import org.apache.maven.api.plugin.testing.stubs.SessionMock;
 import org.apache.maven.api.services.ProjectManager;
-import org.apache.maven.internal.impl.InternalSession;
+import org.apache.maven.impl.DefaultSourceRoot;
+import org.apache.maven.impl.InternalSession;
 import org.junit.jupiter.api.Test;
 
 import static org.apache.maven.api.plugin.testing.MojoExtension.getBasedir;
@@ -138,18 +140,24 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
         InternalSession session = SessionMock.getMockSession("target/local-repo");
         ProjectManager projectManager = mock(ProjectManager.class);
         when(session.getService(ProjectManager.class)).thenReturn(projectManager);
-        when(projectManager.getCompileSourceRoots(any(), eq(ProjectScope.TEST))).thenAnswer(iom -> {
-            Project p = iom.getArgument(0, Project.class);
-            return Collections.singletonList(
-                    Paths.get(getBasedir()).resolve(p.getModel().getBuild().getTestSourceDirectory()));
-        });
-        when(projectManager.getResources(any(), eq(ProjectScope.TEST))).thenAnswer(iom -> {
-            Project p = iom.getArgument(0, Project.class);
-            return p.getBuild().getTestResources().stream()
-                    .map(r -> r.withDirectory(
-                            Paths.get(getBasedir()).resolve(r.getDirectory()).toString()))
-                    .toList();
-        });
+        when(projectManager.getEnabledSourceRoots(any(), eq(ProjectScope.MAIN), any()))
+                .thenAnswer(iom -> {
+                    Project p = iom.getArgument(0, Project.class);
+                    DefaultSourceRoot sourceRoot = new DefaultSourceRoot(
+                            ProjectScope.MAIN,
+                            Language.JAVA_FAMILY,
+                            Paths.get(getBasedir())
+                                    .resolve(p.getModel().getBuild().getSourceDirectory()));
+
+                    return Stream.of(sourceRoot);
+                });
+        //        when(projectManager.getResources(any(), eq(ProjectScope.TEST))).thenAnswer(iom -> {
+        //            Project p = iom.getArgument(0, Project.class);
+        //            return p.getBuild().getTestResources().stream()
+        //                    .map(r -> r.withDirectory(
+        //                            Paths.get(getBasedir()).resolve(r.getDirectory()).toString()))
+        //                    .toList();
+        //        });
         return session;
     }
 }
