@@ -57,11 +57,11 @@ public class TestSourceJarNoForkMojo extends AbstractSourceJarMojo {
      * {@inheritDoc}
      */
     protected List<Resource> getResources(Project p) {
-        //        if (excludeResources) {
-        return Collections.emptyList();
-        //        }
+        if (excludeResources) {
+            return Collections.emptyList();
+        }
 
-        //        return projectManager.getResources(p, ProjectScope.TEST);
+        return p.getBuild().getTestResources();
     }
 
     /**

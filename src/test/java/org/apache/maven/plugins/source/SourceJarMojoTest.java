@@ -195,13 +195,6 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
 
                     return Stream.of(sourceRoot);
                 });
-        //        when(projectManager.getResources(any(), eq(ProjectScope.MAIN))).thenAnswer(iom -> {
-        //            Project p = iom.getArgument(0, Project.class);
-        //            return p.getBuild().getResources().stream()
-        //                    .map(r -> r.withDirectory(
-        //                            Paths.get(getBasedir()).resolve(r.getDirectory()).toString()))
-        //                    .toList();
-        //        });
         return session;
     }
 }
