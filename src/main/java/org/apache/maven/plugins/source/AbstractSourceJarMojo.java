@@ -399,8 +399,9 @@ public abstract class AbstractSourceJarMojo implements Mojo {
         for (Resource resource : getResources(project)) {
 
             Path sourceDirectory = Paths.get(resource.getDirectory());
+            Path absoluteSourceDirectory = project.getBasedir().resolve(sourceDirectory);
 
-            if (!Files.exists(sourceDirectory)) {
+            if (!Files.exists(absoluteSourceDirectory)) {
                 continue;
             }
 
@@ -417,9 +418,9 @@ public abstract class AbstractSourceJarMojo implements Mojo {
                 if (!targetPath.trim().endsWith("/")) {
                     targetPath += "/";
                 }
-                addDirectory(archiver, sourceDirectory, targetPath, combinedIncludes, combinedExcludes);
+                addDirectory(archiver, absoluteSourceDirectory, targetPath, combinedIncludes, combinedExcludes);
             } else {
-                addDirectory(archiver, sourceDirectory, combinedIncludes, combinedExcludes);
+                addDirectory(archiver, absoluteSourceDirectory, combinedIncludes, combinedExcludes);
             }
         }
     }
