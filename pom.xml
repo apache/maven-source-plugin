@@ -78,7 +78,7 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <mavenVersion>3.9.12</mavenVersion>
+    <mavenVersion>3.9.14</mavenVersion>
 
     <enforce.dependency.declarations>true</enforce.dependency.declarations>
 
