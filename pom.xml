@@ -78,12 +78,12 @@ under the License.
 
   <properties>
     <javaVersion>17</javaVersion>
-    <mavenVersion>4.0.0-beta-3</mavenVersion>
+    <mavenVersion>4.0.0-rc-5</mavenVersion>
 
     <guiceVersion>6.0.0</guiceVersion>
-    <mavenArchiverVersion>4.0.0-beta-1</mavenArchiverVersion>
-    <mavenPluginPluginVersion>4.0.0-beta-1</mavenPluginPluginVersion>
-    <mavenPluginTestingVersion>4.0.0-beta-1</mavenPluginTestingVersion>
+    <mavenArchiverVersion>4.0.0-beta-5</mavenArchiverVersion>
+    <mavenPluginPluginVersion>4.0.0-beta-2</mavenPluginPluginVersion>
+    <mavenPluginTestingVersion>4.0.0-beta-4</mavenPluginTestingVersion>
     <mockitoVersion>5.23.0</mockitoVersion>
     <plexusArchiverVersion>4.11.0</plexusArchiverVersion>
     <version.maven-plugin-tools>${mavenPluginPluginVersion}</version.maven-plugin-tools>
@@ -128,13 +128,13 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-api-meta</artifactId>
+      <artifactId>maven-api-annotations</artifactId>
       <version>${mavenVersion}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.apache.maven</groupId>
+      <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-archiver</artifactId>
       <version>${mavenArchiverVersion}</version>
     </dependency>
@@ -162,7 +162,13 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-api-impl</artifactId>
+      <artifactId>maven-xml</artifactId>
+      <version>${mavenVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-impl</artifactId>
       <version>${mavenVersion}</version>
       <scope>test</scope>
     </dependency>

@@ -47,7 +47,10 @@ public class SourceJarNoForkMojo extends AbstractSourceJarMojo {
      * {@inheritDoc}
      */
     protected List<Path> getSources(Project p) {
-        return projectManager.getCompileSourceRoots(p, ProjectScope.MAIN);
+        return projectManager
+                .getEnabledSourceRoots(p, ProjectScope.MAIN, p.getLanguage())
+                .map(sourceRoot -> sourceRoot.directory())
+                .toList();
     }
 
     /**
@@ -58,7 +61,7 @@ public class SourceJarNoForkMojo extends AbstractSourceJarMojo {
             return Collections.emptyList();
         }
 
-        return projectManager.getResources(p, ProjectScope.MAIN);
+        return p.getBuild().getResources();
     }
 
     /**
