@@ -144,7 +144,7 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
                 .thenAnswer(iom -> {
                     Project p = iom.getArgument(0, Project.class);
                     DefaultSourceRoot sourceRoot = new DefaultSourceRoot(
-                            ProjectScope.MAIN,
+                            ProjectScope.TEST,
                             Language.JAVA_FAMILY,
                             Paths.get(getBasedir())
                                     .resolve(p.getModel().getBuild().getTestSourceDirectory()));
