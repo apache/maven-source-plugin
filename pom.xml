@@ -80,7 +80,7 @@ under the License.
     <javaVersion>17</javaVersion>
     <mavenVersion>4.0.0-beta-3</mavenVersion>
 
-    <guiceVersion>6.0.0</guiceVersion>
+    <guiceVersion>7.0.0</guiceVersion>
     <mavenArchiverVersion>4.0.0-beta-1</mavenArchiverVersion>
     <mavenPluginPluginVersion>4.0.0-beta-1</mavenPluginPluginVersion>
     <mavenPluginTestingVersion>4.0.0-beta-1</mavenPluginTestingVersion>
