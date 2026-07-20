@@ -229,6 +229,7 @@ under the License.
                   <goal>install</goal>
                 </goals>
                 <addTestClassPath>true</addTestClassPath>
+                <mavenOpts>-Dmaven.resolver.transport=wagon</mavenOpts>
               </configuration>
             </plugin>
           </plugins>
