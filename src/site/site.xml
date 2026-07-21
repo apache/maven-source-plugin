@@ -19,16 +19,27 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project xmlns="http://maven.apache.org/DECORATION/1.8.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 https://maven.apache.org/xsd/decoration-1.8.0.xsd">
+<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
+  <!--
+    Workaround for Maven 4.0.0-beta-3, the version this plugin currently builds against:
+    on beta-3 the parent site descriptor is not resolved, so the skin declared in the
+    Maven parent is not inherited and maven-site-plugin fails with "skin cannot be null".
+    Parent resolution works again on Maven 4.0.0-rc-5+, where this <skin> is redundant
+    (the parent's skin is inherited). Re-check and drop this once the build moves off
+    beta-3. See apache/maven-site-plugin#1286 for the cryptic-error part.
+  -->
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>2.1.0</version>
+  </skin>
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
       <item name="Plugin Documentation" href="plugin-info.html"/>
       <item name="Usage" href="usage.html"/>
       <item name="FAQ" href="faq.html"/>
-      <!-- According to https://issues.apache.org/jira/browse/MNGSITE-152 -->
       <item name="License" href="https://www.apache.org/licenses/"/>
       <item name="Download" href="download.html"/>
     </menu>
@@ -36,4 +47,4 @@ under the License.
       <item name="Configuring Source Plugin" href="/examples/configureplugin.html"/>
     </menu>
   </body>
-</project>
+</site>
