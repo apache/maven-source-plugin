@@ -78,7 +78,7 @@ under the License.
 
   <properties>
     <javaVersion>17</javaVersion>
-    <mavenVersion>4.0.0-rc-5</mavenVersion>
+    <mavenVersion>4.0.0-rc-6</mavenVersion>
 
     <guiceVersion>6.0.0</guiceVersion>
     <mavenArchiverVersion>4.0.0-beta-5</mavenArchiverVersion>
