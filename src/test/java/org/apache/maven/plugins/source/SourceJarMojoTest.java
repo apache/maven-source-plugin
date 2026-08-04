@@ -26,17 +26,17 @@ import org.apache.maven.api.Language;
 import org.apache.maven.api.Project;
 import org.apache.maven.api.ProjectScope;
 import org.apache.maven.api.di.Provides;
-import org.apache.maven.api.plugin.testing.Basedir;
-import org.apache.maven.api.plugin.testing.InjectMojo;
-import org.apache.maven.api.plugin.testing.MojoParameter;
-import org.apache.maven.api.plugin.testing.MojoTest;
-import org.apache.maven.api.plugin.testing.stubs.SessionMock;
 import org.apache.maven.api.services.ProjectManager;
 import org.apache.maven.impl.DefaultSourceRoot;
 import org.apache.maven.impl.InternalSession;
+import org.apache.maven.testing.plugin.Basedir;
+import org.apache.maven.testing.plugin.InjectMojo;
+import org.apache.maven.testing.plugin.MojoParameter;
+import org.apache.maven.testing.plugin.MojoTest;
+import org.apache.maven.testing.plugin.stubs.SessionMock;
 import org.junit.jupiter.api.Test;
 
-import static org.apache.maven.api.plugin.testing.MojoExtension.getBasedir;
+import static org.apache.maven.testing.plugin.MojoExtension.getBasedir;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -184,16 +184,22 @@ public class SourceJarMojoTest extends AbstractSourcePluginTestCase {
         InternalSession session = SessionMock.getMockSession("target/local-repo");
         ProjectManager projectManager = mock(ProjectManager.class);
         when(session.getService(ProjectManager.class)).thenReturn(projectManager);
-        when(projectManager.getEnabledSourceRoots(any(), eq(ProjectScope.MAIN), any()))
+        when(projectManager.getEnabledSourceRoots(any(), eq(ProjectScope.MAIN), eq(Language.JAVA_FAMILY)))
                 .thenAnswer(iom -> {
                     Project p = iom.getArgument(0, Project.class);
-                    DefaultSourceRoot sourceRoot = new DefaultSourceRoot(
+                    // since 4.0.0-rc-x the model no longer carries a default <sourceDirectory>
+                    String sourceDirectory = p.getModel().getBuild().getSourceDirectory();
+                    return Stream.of(new DefaultSourceRoot(
                             ProjectScope.MAIN,
                             Language.JAVA_FAMILY,
                             Paths.get(getBasedir())
-                                    .resolve(p.getModel().getBuild().getSourceDirectory()));
-
-                    return Stream.of(sourceRoot);
+                                    .resolve(sourceDirectory != null ? sourceDirectory : "src/main/java")));
+                });
+        when(projectManager.getEnabledSourceRoots(any(), eq(ProjectScope.MAIN), eq(Language.RESOURCES)))
+                .thenAnswer(iom -> {
+                    Project p = iom.getArgument(0, Project.class);
+                    return p.getBuild().getResources().stream()
+                            .map(r -> new DefaultSourceRoot(Paths.get(getBasedir()), ProjectScope.MAIN, r));
                 });
         return session;
     }

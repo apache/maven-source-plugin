@@ -22,9 +22,10 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.maven.api.Language;
 import org.apache.maven.api.Project;
 import org.apache.maven.api.ProjectScope;
-import org.apache.maven.api.model.Resource;
+import org.apache.maven.api.SourceRoot;
 import org.apache.maven.api.plugin.annotations.Mojo;
 import org.apache.maven.api.plugin.annotations.Parameter;
 
@@ -48,20 +49,22 @@ public class SourceJarNoForkMojo extends AbstractSourceJarMojo {
      */
     protected List<Path> getSources(Project p) {
         return projectManager
-                .getEnabledSourceRoots(p, ProjectScope.MAIN, p.getLanguage())
-                .map(sourceRoot -> sourceRoot.directory())
+                .getEnabledSourceRoots(p, ProjectScope.MAIN, Language.JAVA_FAMILY)
+                .map(SourceRoot::directory)
                 .toList();
     }
 
     /**
      * {@inheritDoc}
      */
-    protected List<Resource> getResources(Project p) {
+    protected List<SourceRoot> getResources(Project p) {
         if (excludeResources) {
             return Collections.emptyList();
         }
 
-        return p.getBuild().getResources();
+        return projectManager
+                .getEnabledSourceRoots(p, ProjectScope.MAIN, Language.RESOURCES)
+                .toList();
     }
 
     /**
