@@ -27,7 +27,7 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static org.apache.maven.api.plugin.testing.MojoExtension.getBasedir;
+import static org.apache.maven.testing.plugin.MojoExtension.getBasedir;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
