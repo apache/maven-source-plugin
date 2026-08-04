@@ -24,7 +24,6 @@ import java.util.jar.*;
 try
 {
     File jarFile = new File( basedir, "target/test-jar-generate-test-sources-1.0-SNAPSHOT-test-sources.jar" );
-    System.out.println( "Checking for existence of " + jarFile );
     if ( !jarFile.isFile() )
     {
         System.out.println( "FAILURE! Test sources JAR does not exist." );
@@ -39,19 +38,16 @@ try
     };
     for ( String included : includedEntries )
     {
-        System.out.println( "Checking for existence of " + included );
         if ( jar.getEntry( included ) == null )
         {
             System.out.println( "FAILURE! Expected entry not found: " + included );
             return false;
         }
     }
-
-    System.out.println( "SUCCESS! Generated test sources are included in the test sources JAR." );
 }
-catch( Throwable t )
+catch( Exception ex )
 {
-    t.printStackTrace();
+    ex.printStackTrace();
     return false;
 }
 
