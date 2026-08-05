@@ -39,6 +39,7 @@ try
         "MyTest.java",
         "test.properties",
         "generated.properties",
+        "generate-test-sources.properties",
     };
     for ( String included : includedEntries )
     {

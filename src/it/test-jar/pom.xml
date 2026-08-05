@@ -55,6 +55,19 @@
               <testSourceRoot>target/generated-sources/ant</testSourceRoot>
             </configuration>
           </execution>
+          <execution>
+            <id>generate-test-sources</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>generate-test-sources</phase>
+            <configuration>
+              <tasks>
+                <touch file="target/generated-sources/ant/generate-test-sources.properties" mkdirs="true" />
+              </tasks>
+              <testSourceRoot>target/generated-sources/ant</testSourceRoot>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
