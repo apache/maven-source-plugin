@@ -59,12 +59,6 @@ public abstract class AbstractSourceJarMojo implements Mojo {
     private static final String[] DEFAULT_EXCLUDES = new String[] {};
 
     /**
-     * Name of the directory produced by maven-remote-resources-plugin whose contents are added to
-     * the source archive. Matched against the last path segment, not the whole path.
-     */
-    private static final String SHARED_ARCHIVE_RESOURCES = "maven-shared-archive-resources";
-
-    /**
      * List of files to include. Specified as fileset patterns which are relative to the input directory whose contents
      * is being packaged into the JAR.
      *
@@ -439,7 +433,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
             for (org.apache.maven.api.model.Resource r : resources) {
                 Path resourceDirectory = Paths.get(r.getDirectory());
                 Path directoryName = resourceDirectory.getFileName();
-                if (directoryName != null && SHARED_ARCHIVE_RESOURCES.equals(directoryName.toString())) {
+                if (directoryName != null && "maven-shared-archive-resources".equals(directoryName.toString())) {
                     addDirectory(
                             archiver.getArchiver(),
                             resourceDirectory,
