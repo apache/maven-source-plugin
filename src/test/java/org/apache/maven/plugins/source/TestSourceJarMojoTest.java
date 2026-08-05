@@ -103,7 +103,7 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
         mojo.execute();
 
         // Now make sure that no archive got created
-        final File expectedFile = getTestTargetDir("project-005");
+        final File expectedFile = getTestSourceArchive(getTestTargetDir("project-005"), "project-005");
         assertFalse(
                 expectedFile.exists(),
                 "Test source archive should not have been created[" + expectedFile.getAbsolutePath() + "]");
