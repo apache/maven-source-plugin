@@ -431,10 +431,12 @@ public abstract class AbstractSourceJarMojo implements Mojo {
                     project.getBuild().getResources();
 
             for (org.apache.maven.api.model.Resource r : resources) {
-                if (r.getDirectory().endsWith("maven-shared-archive-resources")) {
+                Path resourceDirectory = Paths.get(r.getDirectory());
+                Path directoryName = resourceDirectory.getFileName();
+                if (directoryName != null && "maven-shared-archive-resources".equals(directoryName.toString())) {
                     addDirectory(
                             archiver.getArchiver(),
-                            Paths.get(r.getDirectory()),
+                            resourceDirectory,
                             getCombinedIncludes(null),
                             getCombinedExcludes(null));
                 }
