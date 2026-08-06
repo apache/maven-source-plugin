@@ -1,83 +1,48 @@
- ------
- Introduction
- ------
- Maria Odea Ching
- ------
- 2013-07-22
- ------
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+http://www.apache.org/licenses/LICENSE-2.0
 
- ~~ NOTE: For help with the syntax of this file, see:
- ~~ http://maven.apache.org/doxia/references/apt-format.html
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
-${project.name}
+# Apache Maven Source Plugin
+The Source Plugin creates a jar archive of the source files of the current project. The jar file is, by default, created in the project's target directory.
 
- The Source Plugin creates a jar archive of the source files of the current project. The jar file is, by default,
- created in the project's target directory.
+## Important Hint
 
-* Important Hint
+Starting with version 3.0.0 of the plugin all properties which could be used via command line have been named based on the following schema **maven.source.\***. Further details can be found in the goal documentations.
 
- Starting with version 3.0.0 of the plugin all properties which could be used via command line
- have been named based on the following schema <<maven.source.*>>. Further details can be found 
- in the goal documentations.
+## Goals Overview
 
-* Goals Overview
+The Source Plugin has five goals:
 
-   The Source Plugin has five goals:
+- [source:aggregate](./aggregate-mojo.html) aggregrates sources for all modules in an aggregator project.
+- [source:jar](./jar-mojo.html) is used to bundle the main sources of the project into a jar archive.
+- [source:test-jar](./test-jar-mojo.html) on the other hand, is used to bundle the test sources of the project into a jar archive.
+- [source:jar-no-fork](./jar-no-fork-mojo.html) is similar to **jar** but does not fork the build lifecycle.
+- [source:test-jar-no-fork](./test-jar-no-fork-mojo.html) is similar to **test-jar** but does not fork the build lifecycle.
+## Usage
 
-   * {{{./aggregate-mojo.html}source:aggregate}} aggregrates sources for all modules in an aggregator project.
+General instructions on how to use the Source Plugin can be found on the [usage page](./usage.html). Some more specific use cases are described in the examples given below.
 
-   * {{{./jar-mojo.html}source:jar}} is used to bundle the main sources of the project into a jar archive.
+In case you still have questions regarding the plugin's usage, please have a look at the [FAQ](./faq.html) and feel free to contact the [user mailing list](./mailing-lists.html). The posts to the mailing list are archived and could already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching the [mail archive](./mailing-lists.html).
 
-   * {{{./test-jar-mojo.html}source:test-jar}} on the other hand, is used to bundle the test sources of the project into a
-     jar archive.
+If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in our [issue tracker](./issue-management.html). When creating a new issue, please provide a comprehensive description of your concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason, entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated. Of course, patches are welcome, too. Contributors can check out the project from our [source repository](./scm.html) and will find supplementary information in the [guide to helping with Maven](http://maven.apache.org/guides/development/guide-helping.html).
 
-   * {{{./jar-no-fork-mojo.html}source:jar-no-fork}} is similar to <<jar>> but does not fork the build lifecycle.
+## Examples
 
-   * {{{./test-jar-no-fork-mojo.html}source:test-jar-no-fork}} is similar to <<test-jar>> but does not fork the build lifecycle.
+To provide you with better understanding on some usages of the Source plugin, you can take a look into the following examples:
 
-   []
-
-* Usage
-
-  General instructions on how to use the Source Plugin can be found on the {{{./usage.html}usage page}}. Some more
-  specific use cases are described in the examples given below.
-
-  In case you still have questions regarding the plugin's usage, please have a look at the {{{./faq.html}FAQ}} and feel
-  free to contact the {{{./mailing-lists.html}user mailing list}}. The posts to the mailing list are archived and could
-  already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching
-  the {{{./mailing-lists.html}mail archive}}.
-
-  If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in our
-  {{{./issue-management.html}issue tracker}}. When creating a new issue, please provide a comprehensive description of your
-  concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason,
-  entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated.
-  Of course, patches are welcome, too. Contributors can check out the project from our
-  {{{./scm.html}source repository}} and will find supplementary information in the
-  {{{http://maven.apache.org/guides/development/guide-helping.html}guide to helping with Maven}}.
-
-* Examples
-
-   To provide you with better understanding on some usages of the Source plugin, you can take a look into the
-   following examples:
-
-   * {{{./examples/configureplugin.html}Configuring Source Plugin}}
-
-  []
-
+- [Configuring Source Plugin](./examples/configureplugin.html)
