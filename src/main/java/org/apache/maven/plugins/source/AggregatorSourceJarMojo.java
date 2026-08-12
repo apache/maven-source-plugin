@@ -28,16 +28,23 @@ import org.apache.maven.api.plugin.annotations.Mojo;
  *
  * @since 2.0.3
  */
-@Mojo(name = "aggregate", defaultPhase = "package", aggregator = true)
+@Mojo(name = AggregatorSourceJarMojo.AGGREGATE_GOAL, defaultPhase = "package", aggregator = true)
 @Execute(phase = "generate-sources")
 public class AggregatorSourceJarMojo extends SourceJarMojo {
+
+    static final String AGGREGATE_GOAL = "aggregate";
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected void doExecute() throws MojoException {
-        if (Type.POM.equals(getProject().getPackaging().type().id())) {
+        String packaging = getProject().getPackaging().type().id();
+        if (Type.POM.equals(packaging)) {
             packageSources(reactorProjects);
+        } else {
+            getLog().warn("Not packaging aggregated sources: the " + AGGREGATE_GOAL + " goal requires \"" + Type.POM
+                    + "\" packaging, but this project uses \"" + packaging + "\" packaging.");
         }
     }
 }
