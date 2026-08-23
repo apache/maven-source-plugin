@@ -84,6 +84,16 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     private boolean useDefaultExcludes;
 
     /**
+     * Whether to follow symbolic links below the source directories. When false, a symbolic link is archived as a
+     * link, which points nowhere once the jar is unpacked somewhere else; when true, a link is archived as the file
+     * or directory it points at, and a linked directory's contents are included.
+     *
+     * @since 3.5.0
+     */
+    @Parameter(property = "maven.source.followSymlinks", defaultValue = "false")
+    private boolean followSymlinks;
+
+    /**
      * The Maven Project Object
      */
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
@@ -444,7 +454,9 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             throws MojoExecutionException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver");
-            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory).includeExclude(pIncludes, pExcludes));
+            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory)
+                    .includeExclude(pIncludes, pExcludes)
+                    .followingSymLinks(followSymlinks));
         } catch (ArchiverException e) {
             throw new MojoExecutionException("Error adding directory to source archive.", e);
         }
@@ -463,8 +475,10 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
             throws MojoExecutionException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver with prefix " + prefix);
-            archiver.addFileSet(
-                    DefaultFileSet.fileSet(sourceDirectory).prefixed(prefix).includeExclude(pIncludes, pExcludes));
+            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory)
+                    .prefixed(prefix)
+                    .includeExclude(pIncludes, pExcludes)
+                    .followingSymLinks(followSymlinks));
         } catch (ArchiverException e) {
             throw new MojoExecutionException("Error adding directory to source archive.", e);
         }
