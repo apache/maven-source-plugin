@@ -88,6 +88,16 @@ public abstract class AbstractSourceJarMojo implements Mojo {
     protected boolean useDefaultExcludes;
 
     /**
+     * Whether to follow symbolic links below the source directories. When false, a symbolic link is archived as a
+     * link, which points nowhere once the jar is unpacked somewhere else; when true, a link is archived as the file
+     * or directory it points at, and a linked directory's contents are included.
+     *
+     * @since 3.5.0
+     */
+    @Parameter(property = "maven.source.followSymlinks", defaultValue = "false")
+    private boolean followSymlinks;
+
+    /**
      * The Maven Project Object
      */
     @Inject
@@ -450,7 +460,9 @@ public abstract class AbstractSourceJarMojo implements Mojo {
             throws MojoException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver");
-            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile()).includeExclude(pIncludes, pExcludes));
+            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile())
+                    .includeExclude(pIncludes, pExcludes)
+                    .followingSymLinks(followSymlinks));
         } catch (ArchiverException e) {
             throw new MojoException("Error adding directory to source archive.", e);
         }
@@ -471,7 +483,8 @@ public abstract class AbstractSourceJarMojo implements Mojo {
             getLog().debug("add directory " + sourceDirectory + " to archiver with prefix " + prefix);
             archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile())
                     .prefixed(prefix)
-                    .includeExclude(pIncludes, pExcludes));
+                    .includeExclude(pIncludes, pExcludes)
+                    .followingSymLinks(followSymlinks));
         } catch (ArchiverException e) {
             throw new MojoException("Error adding directory to source archive.", e);
         }
