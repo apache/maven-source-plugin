@@ -36,8 +36,12 @@ public class AggregatorSourceJarMojo extends SourceJarMojo {
      */
     @Override
     protected void doExecute() throws MojoException {
-        if (Type.POM.equals(getProject().getPackaging().type().id())) {
+        String type = getProject().getPackaging().type().id();
+        if (Type.POM.equals(type)) {
             packageSources(reactorProjects);
+        } else {
+            getLog().warn("NOT aggregating sources as this goal requires a project with [" + Type.POM
+                    + "] packaging. Current project [" + getProject().getId() + "] has a [" + type + "] packaging.");
         }
     }
 }
