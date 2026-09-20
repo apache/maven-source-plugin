@@ -34,10 +34,10 @@ try
 
     JarFile jar = new JarFile( jarFile );
 
-    String[] includedEntries = {
+    String[] includedEntries = [
         "META-INF/MANIFEST.MF",
         "MyClass2.java"
-    };
+    ];
     for ( String included : includedEntries )
     {
         System.out.println( "Checking for existence of " + included );
@@ -48,12 +48,12 @@ try
         }
     }
 
-    String[] excludedEntries = {
+    String[] excludedEntries = [
         "MyTest.java",
         "test.properties",
         "MyClass.java",
         "main.properties",
-    };
+    ];
     for ( String excluded : excludedEntries )
     {
         System.out.println( "Checking for absence of " + excluded );
@@ -65,7 +65,7 @@ try
     }
 
 
-    File jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-test-sources.jar" );
+    jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-test-sources.jar" );
     System.out.println( "Checking for existence of " + jarFile );
     if ( !jarFile.isFile() )
     {
@@ -73,13 +73,13 @@ try
         return false;
     }
 
-    JarFile jar = new JarFile( jarFile );
+    jar = new JarFile( jarFile );
 
-    String[] includedEntries = {
+    includedEntries = [
         "META-INF/MANIFEST.MF",
         "MyTest.java",
         "test.properties",
-    };
+    ];
     for ( String included : includedEntries )
     {
         System.out.println( "Checking for existence of " + included );
@@ -90,10 +90,10 @@ try
         }
     }
 
-    String[] excludedEntries = {
+    excludedEntries = [
         "MyTest2.java",
         "MyClass.java"
-    };
+    ];
     for ( String excluded : excludedEntries )
     {
         System.out.println( "Checking for absence of " + excluded );
