@@ -34,12 +34,12 @@ try
 
     JarFile jar = new JarFile( jarFile );
 
-    String[] includedEntries = {
+    String[] includedEntries = [
         "META-INF/MANIFEST.MF",
         "MyTest.java",
         "test.properties",
         "generated.properties",
-    };
+    ];
     for ( String included : includedEntries )
     {
         System.out.println( "Checking for existence of " + included );
@@ -50,10 +50,10 @@ try
         }
     }
 
-    String[] excludedEntries = {
+    String[] excludedEntries = [
         "MyClass.java",
         "main.properties",
-    };
+    ];
     for ( String excluded : excludedEntries )
     {
         System.out.println( "Checking for absence of " + excluded );
