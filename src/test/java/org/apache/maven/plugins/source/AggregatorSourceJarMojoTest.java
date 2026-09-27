@@ -25,14 +25,14 @@ import org.apache.maven.api.Packaging;
 import org.apache.maven.api.Project;
 import org.apache.maven.api.Type;
 import org.apache.maven.api.plugin.Log;
+import org.apache.maven.api.plugin.MojoException;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
@@ -65,23 +65,18 @@ class AggregatorSourceJarMojoTest {
     }
 
     /**
-     * The goal cannot aggregate anything for non-POM packaging, but skipping without a word leaves the user with no
+     * The goal cannot aggregate anything for non-POM packaging, so it fails rather than leaving the user with no
      * source archive and no reason why.
      */
     @Test
-    void testNonPomPackagingLogsInsteadOfSkippingSilently() {
-        Log log = mock(Log.class);
-        RecordingAggregatorSourceJarMojo mojo = mojoWithPackaging("jar", log);
+    void testNonPomPackagingFails() {
+        RecordingAggregatorSourceJarMojo mojo = mojoWithPackaging("jar", mock(Log.class));
 
-        mojo.doExecute();
+        MojoException e = assertThrows(MojoException.class, mojo::doExecute);
 
         assertNull(mojo.packagedProjects, "Sources should not be packaged for non-POM packaging");
-
-        ArgumentCaptor<CharSequence> info = ArgumentCaptor.forClass(CharSequence.class);
-        verify(log).info(info.capture());
-        String message = info.getValue().toString();
-        assertTrue(message.contains("jar"), "Message should name the actual packaging: " + message);
-        assertTrue(message.contains("aggregate:1.0:pom"), "Message should name the project: " + message);
+        assertTrue(e.getMessage().contains("jar"), "Message should name the actual packaging: " + e.getMessage());
+        assertTrue(e.getMessage().contains("aggregate:1.0:pom"), "Message should name the project: " + e.getMessage());
     }
 
     private static RecordingAggregatorSourceJarMojo mojoWithPackaging(String type, Log log) {
