@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+---
+title: Configuring Source Plugin
+author: 
+  - Maria Odea Ching
+date: 11 July 2006
+---
+
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -8,7 +14,7 @@ to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -17,35 +23,30 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>source</groupId>
-  <artifactId>maven-source-plugin-test-project-001</artifactId>
-  <version>99.0</version>
-  <packaging>jar</packaging>
-  <name>Maven</name>
-  <url>http://maven.apache.org</url>
 
+# Configuring Source Plugin
+
+To customize the plugin, you can change its configuration parameters in your POM, as shown below:
+
+```xml
+<project>
+  ...
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${project.version}</version>
         <configuration>
-          <finalName>maven-source-plugin-test-project-001-99.0</finalName>
-          <reactorProjects />
+          <outputDirectory>/absolute/path/to/the/output/directory</outputDirectory>
+          <finalName>filename-of-generated-jar-file</finalName>
+          <attach>false</attach>
         </configuration>
       </plugin>
     </plugins>
   </build>
+  ...
 </project>
+```
+
+The generated jar file will be named by the value of the `finalName` plus "-sources" if it is the main sources. Otherwise, it would be `finalName` plus "-test-sources" if it is the test sources. It will be generated in the specified `outputDirectory`. The `attach` parameter specifies whether the java sources will be attached to the artifact list of the project.

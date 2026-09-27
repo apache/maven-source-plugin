@@ -17,7 +17,18 @@
  * under the License.
  */
 
+import java.util.zip.ZipFile
 
-File buildLog = new File( basedir, 'build.log' )
+File jar = new File(basedir, 'target/jar-follow-symlinks-1.0-SNAPSHOT-sources.jar')
+assert jar.isFile() : "Missing sources jar $jar"
 
-assert buildLog.text.contains("[INFO] Artifact org.apache.maven.its.sources:jar-no-fork:jar:sources:1.0-SNAPSHOT already attached to target" + File.separator + "jar-no-fork-1.0-SNAPSHOT-sources.jar: ignoring same re-attach (same artifact, same file)")
+new ZipFile(jar).withCloseable { zip ->
+    def entry = zip.getEntry('shared/Shared.java')
+    assert entry != null : "shared/Shared.java is missing; entries were ${zip.entries().collect { it.name }}"
+
+    // The link was resolved, so the entry carries the target's source rather than a link path.
+    def text = zip.getInputStream(entry).text
+    assert text.contains('class Shared') : "shared/Shared.java holds $text"
+}
+
+return true

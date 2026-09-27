@@ -24,7 +24,7 @@ import java.util.regex.*;
 
 try
 {
-    File jarFile = new File( basedir, "target/jar-1.0-SNAPSHOT-sources.jar" );
+    File jarFile = new File( basedir, "target/test-jar-generated-1.0-SNAPSHOT-test-sources.jar" );
     System.out.println( "Checking for existence of " + jarFile );
     if ( !jarFile.isFile() )
     {
@@ -34,12 +34,13 @@ try
 
     JarFile jar = new JarFile( jarFile );
 
-    String[] includedEntries = {
+    String[] includedEntries = [
         "META-INF/MANIFEST.MF",
-        "MyClass.java",
-        "main.properties",
+        "MyTest.java",
+        "test.properties",
         "generated.properties",
-    };
+        "generate-test-sources.properties"
+    ];
     for ( String included : includedEntries )
     {
         System.out.println( "Checking for existence of " + included );
@@ -50,10 +51,10 @@ try
         }
     }
 
-    String[] excludedEntries = {
-        "MyTest.java",
-        "test.properties",
-    };
+    String[] excludedEntries = [
+        "MyClass.java",
+        "main.properties",
+    ];
     for ( String excluded : excludedEntries )
     {
         System.out.println( "Checking for absence of " + excluded );

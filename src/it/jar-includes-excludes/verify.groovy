@@ -24,7 +24,7 @@ import java.util.regex.*;
 
 try
 {
-    File jarFile = new File( basedir, "target/jar-with-archive-config-1.0-SNAPSHOT-sources.jar" );
+    File jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-sources.jar" );
     System.out.println( "Checking for existence of " + jarFile );
     if ( !jarFile.isFile() )
     {
@@ -34,11 +34,10 @@ try
 
     JarFile jar = new JarFile( jarFile );
 
-    String[] includedEntries = {
+    String[] includedEntries = [
         "META-INF/MANIFEST.MF",
-        "MyClass.java",
-        "main.properties",
-    };
+        "MyClass2.java"
+    ];
     for ( String included : includedEntries )
     {
         System.out.println( "Checking for existence of " + included );
@@ -49,10 +48,12 @@ try
         }
     }
 
-    String[] excludedEntries = {
+    String[] excludedEntries = [
         "MyTest.java",
         "test.properties",
-    };
+        "MyClass.java",
+        "main.properties",
+    ];
     for ( String excluded : excludedEntries )
     {
         System.out.println( "Checking for absence of " + excluded );
@@ -63,14 +64,46 @@ try
         }
     }
 
-    System.out.println( "Checking manifest for attribute: Implementation-Version " );
-    Map manifestAttributes = jar.getManifest().getMainAttributes();
-    String implVersion = manifestAttributes.getValue( "Implementation-Version" );
-    if ( implVersion == null )
+
+    jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-test-sources.jar" );
+    System.out.println( "Checking for existence of " + jarFile );
+    if ( !jarFile.isFile() )
     {
         System.out.println( "FAILURE!" );
         return false;
     }
+
+    jar = new JarFile( jarFile );
+
+    includedEntries = [
+        "META-INF/MANIFEST.MF",
+        "MyTest.java",
+        "test.properties",
+    ];
+    for ( String included : includedEntries )
+    {
+        System.out.println( "Checking for existence of " + included );
+        if ( jar.getEntry( included ) == null )
+        {
+            System.out.println( "FAILURE!" );
+            return false;
+        }
+    }
+
+    excludedEntries = [
+        "MyTest2.java",
+        "MyClass.java"
+    ];
+    for ( String excluded : excludedEntries )
+    {
+        System.out.println( "Checking for absence of " + excluded );
+        if ( jar.getEntry( excluded ) != null )
+        {
+            System.out.println( "FAILURE!" );
+            return false;
+        }
+    }
+
 }
 catch( Throwable t )
 {

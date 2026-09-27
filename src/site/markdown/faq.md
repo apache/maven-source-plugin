@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+---
+title: Frequently Asked Questions
+---
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -19,18 +21,14 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<faqs xmlns="http://maven.apache.org/FML/1.0.1"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
-  id="FAQ" title="Frequently Asked Questions">
-  <part id="General">
-    <faq id="How can I generate a source jar of the test classes">
-      <question>How can I generate a source jar of the test classes?</question>
-      <answer>
-        <p>
-        Use the source:test-jar goal to generate a jar file that contains the project test sources.
-        </p>
-      </answer>
-    </faq>
-  </part>
-</faqs>
+<a id="top"></a>
+
+# Frequently Asked Questions
+
+1. [How can I generate a source jar of the test classes?](#How_can_I_generate_a_source_jar_of_the_test_classes)
+
+<a id="How_can_I_generate_a_source_jar_of_the_test_classes"></a>
+
+### How can I generate a source jar of the test classes?
+
+Use the source:test-jar goal to generate a jar file that contains the project test sources.

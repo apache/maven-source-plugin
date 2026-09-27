@@ -21,7 +21,6 @@ package org.apache.maven.plugins.source;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,19 +28,22 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.maven.api.Artifact;
+import org.apache.maven.api.Language;
+import org.apache.maven.api.ProducedArtifact;
 import org.apache.maven.api.Project;
+import org.apache.maven.api.ProjectScope;
 import org.apache.maven.api.Session;
+import org.apache.maven.api.SourceRoot;
 import org.apache.maven.api.Type;
 import org.apache.maven.api.di.Inject;
-import org.apache.maven.api.model.Resource;
 import org.apache.maven.api.plugin.Log;
 import org.apache.maven.api.plugin.Mojo;
 import org.apache.maven.api.plugin.MojoException;
 import org.apache.maven.api.plugin.annotations.Parameter;
 import org.apache.maven.api.services.ArtifactManager;
 import org.apache.maven.api.services.ProjectManager;
-import org.apache.maven.archiver.MavenArchiveConfiguration;
-import org.apache.maven.archiver.MavenArchiver;
+import org.apache.maven.shared.archiver.MavenArchiveConfiguration;
+import org.apache.maven.shared.archiver.MavenArchiver;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -84,6 +86,16 @@ public abstract class AbstractSourceJarMojo implements Mojo {
      */
     @Parameter(property = "maven.source.useDefaultExcludes", defaultValue = "true")
     protected boolean useDefaultExcludes;
+
+    /**
+     * Whether to follow symbolic links below the source directories. When false, a symbolic link is archived as a
+     * link, which points nowhere once the jar is unpacked somewhere else; when true, a link is archived as the file
+     * or directory it points at, and a linked directory's contents are included.
+     *
+     * @since 3.5.0
+     */
+    @Parameter(property = "maven.source.followSymlinks", defaultValue = "false")
+    private boolean followSymlinks;
 
     /**
      * The Maven Project Object
@@ -258,10 +270,10 @@ public abstract class AbstractSourceJarMojo implements Mojo {
 
     /**
      * @param p {@link Project} not null
-     * @return the compile or test resources
+     * @return the compile or test resource roots
      * @throws MojoException in case of an error.
      */
-    protected abstract List<Resource> getResources(Project p) throws MojoException;
+    protected abstract List<SourceRoot> getResources(Project p) throws MojoException;
 
     /**
      * @param p {@link Project}
@@ -321,7 +333,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
             }
 
             if (attach) {
-                Artifact artifact = session.createArtifact(
+                ProducedArtifact artifact = session.createProducedArtifact(
                         project.getGroupId(),
                         project.getArtifactId(),
                         project.getVersion(),
@@ -385,30 +397,31 @@ public abstract class AbstractSourceJarMojo implements Mojo {
         }
 
         // MAPI: this should be taken from the resources plugin
-        for (Resource resource : getResources(project)) {
+        for (SourceRoot resource : getResources(project)) {
 
-            Path sourceDirectory = Paths.get(resource.getDirectory());
+            Path sourceDirectory = resource.directory();
+            Path absoluteSourceDirectory = project.getBasedir().resolve(sourceDirectory);
 
-            if (!Files.exists(sourceDirectory)) {
+            if (!Files.exists(absoluteSourceDirectory)) {
                 continue;
             }
 
-            List<String> resourceIncludes = resource.getIncludes();
+            List<String> resourceIncludes = resource.includes();
 
             String[] combinedIncludes = getCombinedIncludes(resourceIncludes);
 
-            List<String> resourceExcludes = resource.getExcludes();
+            List<String> resourceExcludes = resource.excludes();
 
             String[] combinedExcludes = getCombinedExcludes(resourceExcludes);
 
-            String targetPath = resource.getTargetPath();
+            String targetPath = resource.targetPath().map(Path::toString).orElse(null);
             if (targetPath != null) {
                 if (!targetPath.trim().endsWith("/")) {
                     targetPath += "/";
                 }
-                addDirectory(archiver, sourceDirectory, targetPath, combinedIncludes, combinedExcludes);
+                addDirectory(archiver, absoluteSourceDirectory, targetPath, combinedIncludes, combinedExcludes);
             } else {
-                addDirectory(archiver, sourceDirectory, combinedIncludes, combinedExcludes);
+                addDirectory(archiver, absoluteSourceDirectory, combinedIncludes, combinedExcludes);
             }
         }
     }
@@ -426,20 +439,12 @@ public abstract class AbstractSourceJarMojo implements Mojo {
         // configure for Reproducible Builds based on outputTimestamp value
         archiver.configureReproducibleBuild(outputTimestamp);
 
-        if (project.getBuild() != null) {
-            List<org.apache.maven.api.model.Resource> resources =
-                    project.getBuild().getResources();
-
-            for (org.apache.maven.api.model.Resource r : resources) {
-                if (r.getDirectory().endsWith("maven-shared-archive-resources")) {
-                    addDirectory(
-                            archiver.getArchiver(),
-                            Paths.get(r.getDirectory()),
-                            getCombinedIncludes(null),
-                            getCombinedExcludes(null));
-                }
-            }
-        }
+        projectManager
+                .getEnabledSourceRoots(project, ProjectScope.MAIN, Language.RESOURCES)
+                .map(SourceRoot::directory)
+                .filter(directory -> directory.endsWith("maven-shared-archive-resources"))
+                .forEach(directory -> addDirectory(
+                        archiver.getArchiver(), directory, getCombinedIncludes(null), getCombinedExcludes(null)));
 
         return archiver;
     }
@@ -455,7 +460,9 @@ public abstract class AbstractSourceJarMojo implements Mojo {
             throws MojoException {
         try {
             getLog().debug("add directory " + sourceDirectory + " to archiver");
-            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile()).includeExclude(pIncludes, pExcludes));
+            archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile())
+                    .includeExclude(pIncludes, pExcludes)
+                    .followingSymLinks(followSymlinks));
         } catch (ArchiverException e) {
             throw new MojoException("Error adding directory to source archive.", e);
         }
@@ -476,7 +483,8 @@ public abstract class AbstractSourceJarMojo implements Mojo {
             getLog().debug("add directory " + sourceDirectory + " to archiver with prefix " + prefix);
             archiver.addFileSet(DefaultFileSet.fileSet(sourceDirectory.toFile())
                     .prefixed(prefix)
-                    .includeExclude(pIncludes, pExcludes));
+                    .includeExclude(pIncludes, pExcludes)
+                    .followingSymLinks(followSymlinks));
         } catch (ArchiverException e) {
             throw new MojoException("Error adding directory to source archive.", e);
         }
