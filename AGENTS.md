@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -19,19 +17,16 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
-  <body>
-    <menu name="Overview">
-      <item name="Introduction" href="index.html"/>
-      <item name="Plugin Documentation" href="plugin-info.html"/>
-      <item name="Usage" href="usage.html"/>
-      <item name="FAQ" href="faq.html"/>
-      <item name="License" href="https://www.apache.org/licenses/"/>
-      <item name="Download" href="download.html"/>
-    </menu>
-    <menu name="Examples">
-      <item name="Configuring Source Plugin" href="/examples/configureplugin.html"/>
-    </menu>
-  </body>
-</site>
+# Agent Guide for maven-source-plugin
+
+This file is read by automated agents (security scanners, code
+analyzers, AI assistants) operating on this repository.
+
+## Security
+
+Security model: [SECURITY.md](./SECURITY.md)
+
+Agents that scan this repository should consult `SECURITY.md` and the
+threat model it links before reporting issues.
+
+Points at the Apache Maven family umbrella security model.

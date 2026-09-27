@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -19,18 +17,16 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<faqs xmlns="http://maven.apache.org/FML/1.0.1"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
-  id="FAQ" title="Frequently Asked Questions">
-  <part id="General">
-    <faq id="How can I generate a source jar of the test classes">
-      <question>How can I generate a source jar of the test classes?</question>
-      <answer>
-        <p>
-        Use the source:test-jar goal to generate a jar file that contains the project test sources.
-        </p>
-      </answer>
-    </faq>
-  </part>
-</faqs>
+# Security Policy
+
+## Reporting a Vulnerability
+
+`apache/maven-source-plugin` follows the [Apache Software Foundation security process](https://www.apache.org/security/). Please report suspected
+vulnerabilities privately to `security@apache.org`; do not open public
+GitHub issues or pull requests for security reports.
+
+## Threat Model
+
+What the project treats as in scope and out of scope, the security
+properties it provides and disclaims, the adversary model, and how
+findings are triaged are documented in <https://github.com/apache/maven/blob/master/THREAT_MODEL.md>.

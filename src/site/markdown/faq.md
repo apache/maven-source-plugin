@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+---
+title: Frequently Asked Questions
+---
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -19,19 +21,14 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
-  <body>
-    <menu name="Overview">
-      <item name="Introduction" href="index.html"/>
-      <item name="Plugin Documentation" href="plugin-info.html"/>
-      <item name="Usage" href="usage.html"/>
-      <item name="FAQ" href="faq.html"/>
-      <item name="License" href="https://www.apache.org/licenses/"/>
-      <item name="Download" href="download.html"/>
-    </menu>
-    <menu name="Examples">
-      <item name="Configuring Source Plugin" href="/examples/configureplugin.html"/>
-    </menu>
-  </body>
-</site>
+<a id="top"></a>
+
+# Frequently Asked Questions
+
+1. [How can I generate a source jar of the test classes?](#How_can_I_generate_a_source_jar_of_the_test_classes)
+
+<a id="How_can_I_generate_a_source_jar_of_the_test_classes"></a>
+
+### How can I generate a source jar of the test classes?
+
+Use the source:test-jar goal to generate a jar file that contains the project test sources.

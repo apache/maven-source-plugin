@@ -17,7 +17,13 @@
  * under the License.
  */
 
+import java.nio.file.Files
 
-File buildLog = new File( basedir, 'build.log' )
+// A source directory that is a symbolic link to a tree kept outside src/main/java.
+File link = new File(basedir, 'src/main/java/shared')
+if (Files.isSymbolicLink(link.toPath())) {
+    Files.delete(link.toPath())
+}
+Files.createSymbolicLink(link.toPath(), new File(basedir, 'shared-sources/shared').toPath())
 
-assert buildLog.text.contains("[INFO] Artifact org.apache.maven.its.sources:jar-no-fork:jar:sources:1.0-SNAPSHOT already attached to target" + File.separator + "jar-no-fork-1.0-SNAPSHOT-sources.jar: ignoring same re-attach (same artifact, same file)")
+return true

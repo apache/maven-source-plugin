@@ -24,7 +24,7 @@ import java.util.regex.*;
 
 try
 {
-    File jarFile = new File( basedir, "target/test-jar-1.0-SNAPSHOT-test-sources.jar" );
+    File jarFile = new File( basedir, "target/jar-with-archive-config-1.0-SNAPSHOT-sources.jar" );
     System.out.println( "Checking for existence of " + jarFile );
     if ( !jarFile.isFile() )
     {
@@ -34,12 +34,11 @@ try
 
     JarFile jar = new JarFile( jarFile );
 
-    String[] includedEntries = {
+    String[] includedEntries = [
         "META-INF/MANIFEST.MF",
-        "MyTest.java",
-        "test.properties",
-        "generated.properties",
-    };
+        "MyClass.java",
+        "main.properties",
+    ];
     for ( String included : includedEntries )
     {
         System.out.println( "Checking for existence of " + included );
@@ -50,10 +49,10 @@ try
         }
     }
 
-    String[] excludedEntries = {
-        "MyClass.java",
-        "main.properties",
-    };
+    String[] excludedEntries = [
+        "MyTest.java",
+        "test.properties",
+    ];
     for ( String excluded : excludedEntries )
     {
         System.out.println( "Checking for absence of " + excluded );
@@ -62,6 +61,15 @@ try
             System.out.println( "FAILURE!" );
             return false;
         }
+    }
+
+    System.out.println( "Checking manifest for attribute: Implementation-Version " );
+    Map manifestAttributes = jar.getManifest().getMainAttributes();
+    String implVersion = manifestAttributes.getValue( "Implementation-Version" );
+    if ( implVersion == null )
+    {
+        System.out.println( "FAILURE!" );
+        return false;
     }
 }
 catch( Throwable t )
