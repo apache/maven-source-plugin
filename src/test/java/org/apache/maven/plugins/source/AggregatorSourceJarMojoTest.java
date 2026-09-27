@@ -69,7 +69,7 @@ class AggregatorSourceJarMojoTest {
      * source archive and no reason why.
      */
     @Test
-    void testNonPomPackagingWarnsInsteadOfSkippingSilently() {
+    void testNonPomPackagingLogsInsteadOfSkippingSilently() {
         Log log = mock(Log.class);
         RecordingAggregatorSourceJarMojo mojo = mojoWithPackaging("jar", log);
 
@@ -77,11 +77,11 @@ class AggregatorSourceJarMojoTest {
 
         assertNull(mojo.packagedProjects, "Sources should not be packaged for non-POM packaging");
 
-        ArgumentCaptor<CharSequence> warning = ArgumentCaptor.forClass(CharSequence.class);
-        verify(log).warn(warning.capture());
-        String message = warning.getValue().toString();
-        assertTrue(message.contains("jar"), "Warning should name the actual packaging: " + message);
-        assertTrue(message.contains("aggregate:1.0:pom"), "Warning should name the project: " + message);
+        ArgumentCaptor<CharSequence> info = ArgumentCaptor.forClass(CharSequence.class);
+        verify(log).info(info.capture());
+        String message = info.getValue().toString();
+        assertTrue(message.contains("jar"), "Message should name the actual packaging: " + message);
+        assertTrue(message.contains("aggregate:1.0:pom"), "Message should name the project: " + message);
     }
 
     private static RecordingAggregatorSourceJarMojo mojoWithPackaging(String type, Log log) {

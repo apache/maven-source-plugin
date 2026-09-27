@@ -40,7 +40,7 @@ public class AggregatorSourceJarMojo extends SourceJarMojo {
         if (Type.POM.equals(type)) {
             packageSources(reactorProjects);
         } else {
-            getLog().warn("NOT aggregating sources as this goal requires a project with [" + Type.POM
+            getLog().info("NOT aggregating sources as this goal requires a project with [" + Type.POM
                     + "] packaging. Current project [" + getProject().getId() + "] has a [" + type + "] packaging.");
         }
     }
