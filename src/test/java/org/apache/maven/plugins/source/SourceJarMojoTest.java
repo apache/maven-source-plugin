@@ -21,6 +21,8 @@ package org.apache.maven.plugins.source;
 import javax.inject.Inject;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.maven.api.di.Provides;
 import org.apache.maven.api.plugin.testing.Basedir;
@@ -149,5 +151,18 @@ class SourceJarMojoTest extends AbstractSourcePluginTest {
                 getSourceArchive(target),
                 addMavenDescriptor(
                         "default-configuration.properties", "foo/project010/App.java", "foo/project010/", "foo/"));
+    }
+
+    public void testIncludesAdditionalSourcesFromMain() throws Exception {
+        // must include MRJar configuration from the compiler plugin
+        doTestProjectWithSourceArchive(
+            "msources-144",
+            addMavenDescriptor("msources-144", new String[] {
+                    "SomeClass.java",
+                    "META-INF/versions/9/SomeClass.java"
+                }
+            ),
+            "sources"
+        );
     }
 }
