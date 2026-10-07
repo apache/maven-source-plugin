@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
+ * 
  *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -16,18 +16,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.plugins.source;
 
-import org.apache.maven.api.plugin.annotations.Execute;
-import org.apache.maven.api.plugin.annotations.Mojo;
+import java.io.*;
+import java.util.*;
+import java.util.jar.*;
 
-/**
- * This plugin bundles all the test sources into a jar archive.
- *
- * @since 2.0.3
- */
-@Mojo(name = "test-jar", defaultPhase = "package")
-@Execute(phase = "generate-test-sources")
-public class TestSourceJarMojo extends TestSourceJarNoForkMojo {
-    // no op
+try
+{
+    File jarFile = new File( basedir, "target/test-jar-generate-test-sources-1.0-SNAPSHOT-test-sources.jar" );
+    if ( !jarFile.isFile() )
+    {
+        System.out.println( "FAILURE! Test sources JAR does not exist." );
+        return false;
+    }
+
+    JarFile jar = new JarFile( jarFile );
+
+    String[] includedEntries = {
+        "META-INF/MANIFEST.MF",
+        "GeneratedTest.java",
+    };
+    for ( String included : includedEntries )
+    {
+        if ( jar.getEntry( included ) == null )
+        {
+            System.out.println( "FAILURE! Expected entry not found: " + included );
+            return false;
+        }
+    }
 }
+catch( Exception ex )
+{
+    ex.printStackTrace();
+    return false;
+}
+
+return true;
