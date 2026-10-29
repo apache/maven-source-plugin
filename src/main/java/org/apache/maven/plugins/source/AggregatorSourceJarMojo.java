@@ -18,10 +18,15 @@
  */
 package org.apache.maven.plugins.source;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 /**
  * Aggregate sources for all modules in an aggregator project.
@@ -31,6 +36,11 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Mojo(name = "aggregate", defaultPhase = LifecyclePhase.PACKAGE, aggregator = true, threadSafe = true)
 @Execute(phase = LifecyclePhase.GENERATE_SOURCES)
 public class AggregatorSourceJarMojo extends SourceJarMojo {
+    @Inject
+    public AggregatorSourceJarMojo(MavenProjectHelper projectHelper, @Named("jar") JarArchiver jarArchiver) {
+        super(projectHelper, jarArchiver);
+    }
+
     /**
      * {@inheritDoc}
      */

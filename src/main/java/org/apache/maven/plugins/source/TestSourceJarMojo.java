@@ -18,9 +18,14 @@
  */
 package org.apache.maven.plugins.source;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 /**
  * This plugin bundles all the test sources into a jar archive.
@@ -30,5 +35,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Mojo(name = "test-jar", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
 @Execute(phase = LifecyclePhase.GENERATE_SOURCES)
 public class TestSourceJarMojo extends TestSourceJarNoForkMojo {
-    // no op
+    @Inject
+    public TestSourceJarMojo(MavenProjectHelper projectHelper, @Named("jar") JarArchiver jarArchiver) {
+        super(projectHelper, jarArchiver);
+    }
 }

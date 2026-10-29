@@ -18,6 +18,9 @@
  */
 package org.apache.maven.plugins.source;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +29,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 /**
  * This goal bundles all the test sources into a jar archive.  This goal functions the same
@@ -36,6 +41,11 @@ import org.apache.maven.project.MavenProject;
  */
 @Mojo(name = "test-jar-no-fork", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
 public class TestSourceJarNoForkMojo extends AbstractSourceJarMojo {
+    @Inject
+    public TestSourceJarNoForkMojo(MavenProjectHelper projectHelper, @Named("jar") JarArchiver jarArchiver) {
+        super(projectHelper, jarArchiver);
+    }
+
     /**
      * @since 2.2
      */
