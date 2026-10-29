@@ -18,9 +18,14 @@
  */
 package org.apache.maven.plugins.source;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 /**
  * This plugin bundles all the sources into a jar archive.
@@ -31,5 +36,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Mojo(name = "jar", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
 @Execute(phase = LifecyclePhase.GENERATE_SOURCES)
 public class SourceJarMojo extends SourceJarNoForkMojo {
-    // no op
+    @Inject
+    public SourceJarMojo(MavenProjectHelper projectHelper, @Named("jar") JarArchiver jarArchiver) {
+        super(projectHelper, jarArchiver);
+    }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.maven.plugins.source;
 
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,7 +37,6 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
@@ -55,6 +56,11 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     private static final String[] DEFAULT_INCLUDES = new String[] {"**/**"};
 
     private static final String[] DEFAULT_EXCLUDES = new String[] {};
+
+    protected AbstractSourceJarMojo(MavenProjectHelper projectHelper, @Named("jar") JarArchiver jarArchiver) {
+        this.projectHelper = projectHelper;
+        this.jarArchiver = jarArchiver;
+    }
 
     /**
      * List of files to include. Specified as fileset patterns which are relative to the input directory whose contents
@@ -102,8 +108,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     /**
      * The Jar archiver.
      */
-    @Component(role = Archiver.class, hint = "jar")
-    private JarArchiver jarArchiver;
+    private final JarArchiver jarArchiver;
 
     /**
      * The archive configuration to use. See <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven
@@ -165,8 +170,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     /**
      * Used for attaching the source jar to the project.
      */
-    @Component
-    private MavenProjectHelper projectHelper;
+    private final MavenProjectHelper projectHelper;
 
     /**
      * The directory where the generated archive file will be put.
