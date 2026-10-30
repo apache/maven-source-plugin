@@ -77,7 +77,6 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>8</javaVersion>
     <mavenVersion>3.10.0</mavenVersion>
 
     <enforce.dependency.declarations>true</enforce.dependency.declarations>
