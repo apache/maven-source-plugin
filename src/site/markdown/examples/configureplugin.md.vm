@@ -28,7 +28,7 @@ under the License.
 
 To customize the plugin, you can change its configuration parameters in your POM, as shown below:
 
-```unknown
+```xml
 <project>
   ...
   <build>
