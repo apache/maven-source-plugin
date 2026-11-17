@@ -55,6 +55,7 @@ public class SourceJarNoForkMojo extends AbstractSourceJarMojo {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List<String> getSources(MavenProject p) {
         return p.getCompileSourceRoots();
     }
@@ -62,6 +63,7 @@ public class SourceJarNoForkMojo extends AbstractSourceJarMojo {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List<Resource> getResources(MavenProject p) {
         if (excludeResources) {
             return Collections.emptyList();
@@ -73,6 +75,7 @@ public class SourceJarNoForkMojo extends AbstractSourceJarMojo {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getClassifier() {
         return classifier;
     }

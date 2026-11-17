@@ -232,6 +232,7 @@ public abstract class AbstractSourceJarMojo extends AbstractMojo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute() throws MojoExecutionException {
         if (skipSource) {
             getLog().info("Skipping source per configuration.");
