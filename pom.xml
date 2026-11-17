@@ -193,7 +193,6 @@ under the License.
         <pluginManagement>
           <plugins>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-invoker-plugin</artifactId>
               <configuration>
                 <debug>true</debug>
