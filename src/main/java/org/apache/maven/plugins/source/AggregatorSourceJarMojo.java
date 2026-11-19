@@ -21,10 +21,14 @@ package org.apache.maven.plugins.source;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 
@@ -47,7 +51,18 @@ public class AggregatorSourceJarMojo extends SourceJarMojo {
     @Override
     public void execute() throws MojoExecutionException {
         if ("pom".equals(getProject().getPackaging())) {
-            packageSources(reactorProjects);
+            packageSources(collectedProjects());
         }
+    }
+
+    /**
+     * The modules collected under this project, i.e. its own descendants in the reactor. Unlike
+     * {@link #reactorProjects}, which is the full list of projects in the whole build, this does not change
+     * depending on what else happens to be in the reactor, so the resulting archive is the same whether this
+     * project is built standalone or as part of a larger multi-level reactor.
+     */
+    private List<MavenProject> collectedProjects() {
+        List<MavenProject> collected = getProject().getCollectedProjects();
+        return collected == null ? Collections.emptyList() : collected;
     }
 }
