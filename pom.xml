@@ -88,7 +88,7 @@ under the License.
     <mavenArchiverVersion>4.0.0-beta-6</mavenArchiverVersion>
     <mavenPluginPluginVersion>4.0.0-beta-2</mavenPluginPluginVersion>
     <mockitoVersion>5.24.0</mockitoVersion>
-    <plexusArchiverVersion>4.15.0</plexusArchiverVersion>
+    <plexusArchiverVersion>4.16.0</plexusArchiverVersion>
     <version.maven-plugin-tools>${mavenPluginPluginVersion}</version.maven-plugin-tools>
     <project.build.outputTimestamp>2024-06-26T08:31:50Z</project.build.outputTimestamp>
   </properties>
