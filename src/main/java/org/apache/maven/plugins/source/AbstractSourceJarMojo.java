@@ -36,7 +36,7 @@ import org.apache.maven.api.Session;
 import org.apache.maven.api.SourceRoot;
 import org.apache.maven.api.Type;
 import org.apache.maven.api.di.Inject;
-import org.apache.maven.api.plugin.Log;
+import org.apache.maven.api.logging.Logger;
 import org.apache.maven.api.plugin.Mojo;
 import org.apache.maven.api.plugin.MojoException;
 import org.apache.maven.api.plugin.annotations.Parameter;
@@ -220,7 +220,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
     protected String outputTimestamp;
 
     @Inject
-    protected Log log;
+    protected Logger log;
 
     /**
      * Used for attaching the source jar to the project.
@@ -231,7 +231,7 @@ public abstract class AbstractSourceJarMojo implements Mojo {
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Log getLog() {
+    public Logger getLog() {
         return log;
     }
 

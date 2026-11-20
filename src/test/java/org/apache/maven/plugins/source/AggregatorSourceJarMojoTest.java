@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.maven.api.Packaging;
 import org.apache.maven.api.Project;
 import org.apache.maven.api.Type;
-import org.apache.maven.api.plugin.Log;
+import org.apache.maven.api.logging.Logger;
 import org.apache.maven.api.plugin.MojoException;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +53,7 @@ class AggregatorSourceJarMojoTest {
 
     @Test
     void testPomPackagingPackagesTheReactorProjects() {
-        Log log = mock(Log.class);
+        Logger log = mock(Logger.class);
         RecordingAggregatorSourceJarMojo mojo = mojoWithPackaging(Type.POM, log);
         List<Project> reactorProjects = Collections.singletonList(mock(Project.class));
         mojo.reactorProjects = reactorProjects;
@@ -70,7 +70,7 @@ class AggregatorSourceJarMojoTest {
      */
     @Test
     void testNonPomPackagingFails() {
-        RecordingAggregatorSourceJarMojo mojo = mojoWithPackaging("jar", mock(Log.class));
+        RecordingAggregatorSourceJarMojo mojo = mojoWithPackaging("jar", mock(Logger.class));
 
         MojoException e = assertThrows(MojoException.class, mojo::doExecute);
 
@@ -79,7 +79,7 @@ class AggregatorSourceJarMojoTest {
         assertTrue(e.getMessage().contains("aggregate:1.0:pom"), "Message should name the project: " + e.getMessage());
     }
 
-    private static RecordingAggregatorSourceJarMojo mojoWithPackaging(String type, Log log) {
+    private static RecordingAggregatorSourceJarMojo mojoWithPackaging(String type, Logger log) {
         Type packagingType = mock(Type.class);
         when(packagingType.id()).thenReturn(type);
 
