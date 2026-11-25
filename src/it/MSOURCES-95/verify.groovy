@@ -17,7 +17,7 @@
  * under the License.
  */
 
-File buildLog = new File( basedir, 'build.log' )
+File buildLog = new File(basedir, 'build.log')
 
 String sourcesJarFileName = 'empty-source-directory-1.0-SNAPSHOT-sources.jar'
 String testSourcesJarFileName = "empty-source-directory-1.0-SNAPSHOT-test-sources.jar"

@@ -17,57 +17,47 @@
  * under the License.
  */
 
-import java.io.*;
-import java.util.*;
-import java.util.jar.*;
-import java.util.regex.*;
+import java.io.*
+import java.util.*
+import java.util.jar.*
+import java.util.regex.*
 
-try
-{
-    File jarFile = new File( basedir, "target/jar-1.0-SNAPSHOT-sources.jar" );
-    System.out.println( "Checking for existence of " + jarFile );
-    if ( !jarFile.isFile() )
-    {
-        System.out.println( "FAILURE!" );
-        return false;
+try {
+    File jarFile = new File(basedir, "target/jar-1.0-SNAPSHOT-sources.jar")
+    System.out.println("Checking for existence of " + jarFile)
+    if (!jarFile.isFile()) {
+        System.out.println("FAILURE!")
+        return false
     }
 
-    JarFile jar = new JarFile( jarFile );
+    JarFile jar = new JarFile(jarFile)
 
     String[] includedEntries = [
         "META-INF/MANIFEST.MF",
         "MyClass.java",
         "main.properties",
         "generated.properties",
-    ];
-    for ( String included : includedEntries )
-    {
-        System.out.println( "Checking for existence of " + included );
-        if ( jar.getEntry( included ) == null )
-        {
-            System.out.println( "FAILURE!" );
-            return false;
+    ]
+    for (String included : includedEntries) {
+        System.out.println("Checking for existence of " + included)
+        if (jar.getEntry(included) == null) {
+            System.out.println("FAILURE!")
+            return false
         }
     }
 
-    String[] excludedEntries = [
-        "MyTest.java",
-        "test.properties",
-    ];
-    for ( String excluded : excludedEntries )
-    {
-        System.out.println( "Checking for absence of " + excluded );
-        if ( jar.getEntry( excluded ) != null )
-        {
-            System.out.println( "FAILURE!" );
-            return false;
+    String[] excludedEntries = ["MyTest.java", "test.properties",]
+    for (String excluded : excludedEntries) {
+        System.out.println("Checking for absence of " + excluded)
+        if (jar.getEntry(excluded) != null) {
+            System.out.println("FAILURE!")
+            return false
         }
     }
 }
-catch( Throwable t )
-{
-    t.printStackTrace();
-    return false;
+catch(Throwable t) {
+    t.printStackTrace()
+    return false
 }
 
-return true;
+return true

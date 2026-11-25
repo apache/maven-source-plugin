@@ -17,7 +17,7 @@
  * under the License.
  */
 
-File buildLog = new File( basedir, 'build.log' )
+File buildLog = new File(basedir, 'build.log')
 
 var fs = File.separatorChar == '\\' ? "\\\\" : "/"
 assert buildLog.text =~ /\[ERROR\] Artifact org.apache.maven.its.sources:jar-no-fork:jar:sources:1.0-SNAPSHOT already attached to a file target${fs}jar-no-fork-1.0-SNAPSHOT-sources.jar: attach to target${fs}jar-no-fork-1.0-SNAPSHOT-secondary-sources.jar should be done with another classifier/
