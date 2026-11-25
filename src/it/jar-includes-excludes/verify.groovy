@@ -17,98 +17,60 @@
  * under the License.
  */
 
-import java.io.*;
-import java.util.*;
 import java.util.jar.*;
-import java.util.regex.*;
 
-try
+File jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-sources.jar" );
+System.out.println( "Checking for existence of " + jarFile );
+assert jarFile.isFile()
+
+JarFile jar = new JarFile( jarFile );
+
+String[] includedEntries = [
+    "META-INF/MANIFEST.MF",
+    "MyClass2.java"
+];
+for ( String included : includedEntries )
 {
-    File jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-sources.jar" );
-    System.out.println( "Checking for existence of " + jarFile );
-    if ( !jarFile.isFile() )
-    {
-        System.out.println( "FAILURE!" );
-        return false;
-    }
-
-    JarFile jar = new JarFile( jarFile );
-
-    String[] includedEntries = [
-        "META-INF/MANIFEST.MF",
-        "MyClass2.java"
-    ];
-    for ( String included : includedEntries )
-    {
-        System.out.println( "Checking for existence of " + included );
-        if ( jar.getEntry( included ) == null )
-        {
-            System.out.println( "FAILURE!" );
-            return false;
-        }
-    }
-
-    String[] excludedEntries = [
-        "MyTest.java",
-        "test.properties",
-        "MyClass.java",
-        "main.properties",
-    ];
-    for ( String excluded : excludedEntries )
-    {
-        System.out.println( "Checking for absence of " + excluded );
-        if ( jar.getEntry( excluded ) != null )
-        {
-            System.out.println( "FAILURE!" );
-            return false;
-        }
-    }
-
-
-    jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-test-sources.jar" );
-    System.out.println( "Checking for existence of " + jarFile );
-    if ( !jarFile.isFile() )
-    {
-        System.out.println( "FAILURE!" );
-        return false;
-    }
-
-    jar = new JarFile( jarFile );
-
-    includedEntries = [
-        "META-INF/MANIFEST.MF",
-        "MyTest.java",
-        "test.properties",
-    ];
-    for ( String included : includedEntries )
-    {
-        System.out.println( "Checking for existence of " + included );
-        if ( jar.getEntry( included ) == null )
-        {
-            System.out.println( "FAILURE!" );
-            return false;
-        }
-    }
-
-    excludedEntries = [
-        "MyTest2.java",
-        "MyClass.java"
-    ];
-    for ( String excluded : excludedEntries )
-    {
-        System.out.println( "Checking for absence of " + excluded );
-        if ( jar.getEntry( excluded ) != null )
-        {
-            System.out.println( "FAILURE!" );
-            return false;
-        }
-    }
-
-}
-catch( Throwable t )
-{
-    t.printStackTrace();
-    return false;
+    System.out.println( "Checking for existence of " + included );
+    assert jar.getEntry( included ) != null
 }
 
-return true;
+String[] excludedEntries = [
+    "MyTest.java",
+    "test.properties",
+    "MyClass.java",
+    "main.properties",
+];
+for ( String excluded : excludedEntries )
+{
+    System.out.println( "Checking for absence of " + excluded );
+    assert jar.getEntry( excluded ) == null
+}
+
+
+jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-test-sources.jar" );
+System.out.println( "Checking for existence of " + jarFile );
+assert jarFile.isFile()
+
+jar = new JarFile( jarFile );
+
+includedEntries = [
+    "META-INF/MANIFEST.MF",
+    "MyTest.java",
+    "test.properties",
+];
+for ( String included : includedEntries )
+{
+    System.out.println( "Checking for existence of " + included );
+    assert jar.getEntry( included ) != null
+}
+
+excludedEntries = [
+    "MyTest2.java",
+    "MyClass.java"
+];
+for ( String excluded : excludedEntries )
+{
+    System.out.println( "Checking for absence of " + excluded );
+    assert jar.getEntry( excluded ) == null
+}

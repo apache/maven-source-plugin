@@ -17,34 +17,10 @@
  * under the License.
  */
 
-import java.io.*;
-import java.util.*;
-import java.util.jar.*;
-import java.util.regex.*;
+File jarFile = new File( basedir, "target/project-without-sources-1.0-SNAPSHOT-sources.jar" );
+System.out.println( "Checking for non-existence of " + jarFile );
+assert !jarFile.isFile()
 
-try
-{
-    File jarFile = new File( basedir, "target/project-without-sources-1.0-SNAPSHOT-sources.jar" );
-    System.out.println( "Checking for non-existence of " + jarFile );
-    if ( jarFile.isFile() )
-    {
-        System.out.println( "FAILURE!" );
-        return false;
-    }
-
-    File testJarFile = new File( basedir, "target/project-without-sources-1.0-SNAPSHOT-test-sources.jar" );
-    System.out.println( "Checking for non-existence of " + testJarFile );
-    if ( testJarFile.exists() )
-    {
-        System.out.println( "FAILURE!" );
-        return false;
-    }
-
-}
-catch( Throwable t )
-{
-    t.printStackTrace();
-    return false;
-}
-
-return true;
+File testJarFile = new File( basedir, "target/project-without-sources-1.0-SNAPSHOT-test-sources.jar" );
+System.out.println( "Checking for non-existence of " + testJarFile );
+assert !testJarFile.exists()

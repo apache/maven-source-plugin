@@ -17,32 +17,10 @@
  * under the License.
  */
 
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+File jarFile = new File( basedir, "target/jar-attached-1.0-SNAPSHOT-sources.jar" );
+System.out.println( "Checking for existence of " + jarFile );
+assert jarFile.isFile()
 
-try
-{
-    File jarFile = new File( basedir, "target/jar-attached-1.0-SNAPSHOT-sources.jar" );
-    System.out.println( "Checking for existence of " + jarFile );
-    if ( !jarFile.isFile() )
-    {
-        System.out.println( "FAILURE!" );
-        return false;
-    }
-
-    File attachedFile = new File( localRepositoryPath, "org/apache/maven/its/ejb/jar-attached/1.0-SNAPSHOT/jar-attached-1.0-SNAPSHOT-sources.jar" );
-    System.out.println( "Checking for existence of " + attachedFile );
-    if ( !attachedFile.isFile() )
-    {
-        System.out.println( "FAILURE!" );
-        return false;
-    }
-}
-catch( Throwable t )
-{
-    t.printStackTrace();
-    return false;
-}
-
-return true;
+File attachedFile = new File( localRepositoryPath, "org/apache/maven/its/ejb/jar-attached/1.0-SNAPSHOT/jar-attached-1.0-SNAPSHOT-sources.jar" );
+System.out.println( "Checking for existence of " + attachedFile );
+assert attachedFile.isFile()
