@@ -17,6 +17,6 @@
  * under the License.
  */
 
-File buildLog = new File( basedir, 'build.log' )
+File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.text =~ /\[ERROR\] Artifact org.apache.maven.its.sources:jar-no-fork:java-source:sources:1.0-SNAPSHOT already attached to a file target.jar-no-fork-1.0-SNAPSHOT-sources.jar: attach to target.jar-no-fork-1.0-SNAPSHOT-secondary-sources.jar should be done with another classifier/

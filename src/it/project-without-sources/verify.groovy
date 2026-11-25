@@ -17,10 +17,10 @@
  * under the License.
  */
 
-File jarFile = new File( basedir, "target/project-without-sources-1.0-SNAPSHOT-sources.jar" );
-System.out.println( "Checking for non-existence of " + jarFile );
+File jarFile = new File(basedir, "target/project-without-sources-1.0-SNAPSHOT-sources.jar")
+System.out.println("Checking for non-existence of " + jarFile)
 assert !jarFile.isFile()
 
-File testJarFile = new File( basedir, "target/project-without-sources-1.0-SNAPSHOT-test-sources.jar" );
-System.out.println( "Checking for non-existence of " + testJarFile );
+File testJarFile = new File(basedir, "target/project-without-sources-1.0-SNAPSHOT-test-sources.jar")
+System.out.println("Checking for non-existence of " + testJarFile)
 assert !testJarFile.exists()
