@@ -18,6 +18,6 @@
  */
 
 
-File buildLog = new File( basedir, 'build.log' )
+File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.text.contains("[INFO] Artifact org.apache.maven.its.sources:jar-no-fork:jar:sources:1.0-SNAPSHOT already attached to target" + File.separator + "jar-no-fork-1.0-SNAPSHOT-sources.jar: ignoring same re-attach (same artifact, same file)")
