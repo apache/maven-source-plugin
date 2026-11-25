@@ -17,32 +17,22 @@
  * under the License.
  */
 
-import java.util.jar.*;
+import java.util.jar.*
 
-File jarFile = new File( basedir, "target/jar-classifier-1.0-SNAPSHOT-foo.jar" );
-System.out.println( "Checking for existence of " + jarFile );
+File jarFile = new File(basedir, "target/jar-classifier-1.0-SNAPSHOT-foo.jar")
+System.out.println("Checking for existence of " + jarFile)
 assert jarFile.isFile()
 
-JarFile jar = new JarFile( jarFile );
+JarFile jar = new JarFile(jarFile)
 
-String[] includedEntries = [
-    "META-INF/MANIFEST.MF",
-    "MyClass.java",
-    "main.properties",
-    "generated.properties",
-];
-for ( String included : includedEntries )
-{
-    System.out.println( "Checking for existence of " + included );
-    assert jar.getEntry( included ) != null
+String[] includedEntries = ["META-INF/MANIFEST.MF", "MyClass.java", "main.properties", "generated.properties",]
+for (String included : includedEntries) {
+    System.out.println("Checking for existence of " + included)
+    assert jar.getEntry(included) != null
 }
 
-String[] excludedEntries = [
-    "MyTest.java",
-    "test.properties",
-];
-for ( String excluded : excludedEntries )
-{
-    System.out.println( "Checking for absence of " + excluded );
-    assert jar.getEntry( excluded ) == null
+String[] excludedEntries = ["MyTest.java", "test.properties",]
+for (String excluded : excludedEntries) {
+    System.out.println("Checking for absence of " + excluded)
+    assert jar.getEntry(excluded) == null
 }

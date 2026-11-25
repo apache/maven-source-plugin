@@ -17,60 +17,41 @@
  * under the License.
  */
 
-import java.util.jar.*;
+import java.util.jar.*
 
-File jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-sources.jar" );
-System.out.println( "Checking for existence of " + jarFile );
+File jarFile = new File(basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-sources.jar")
+System.out.println("Checking for existence of " + jarFile)
 assert jarFile.isFile()
 
-JarFile jar = new JarFile( jarFile );
+JarFile jar = new JarFile(jarFile)
 
-String[] includedEntries = [
-    "META-INF/MANIFEST.MF",
-    "MyClass2.java"
-];
-for ( String included : includedEntries )
-{
-    System.out.println( "Checking for existence of " + included );
-    assert jar.getEntry( included ) != null
+String[] includedEntries = ["META-INF/MANIFEST.MF", "MyClass2.java"]
+for (String included : includedEntries) {
+    System.out.println("Checking for existence of " + included)
+    assert jar.getEntry(included) != null
 }
 
-String[] excludedEntries = [
-    "MyTest.java",
-    "test.properties",
-    "MyClass.java",
-    "main.properties",
-];
-for ( String excluded : excludedEntries )
-{
-    System.out.println( "Checking for absence of " + excluded );
-    assert jar.getEntry( excluded ) == null
+String[] excludedEntries = ["MyTest.java", "test.properties", "MyClass.java", "main.properties",]
+for (String excluded : excludedEntries) {
+    System.out.println("Checking for absence of " + excluded)
+    assert jar.getEntry(excluded) == null
 }
 
 
-jarFile = new File( basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-test-sources.jar" );
-System.out.println( "Checking for existence of " + jarFile );
+jarFile = new File(basedir, "target/jar-includes-excludes-1.0-SNAPSHOT-test-sources.jar")
+System.out.println("Checking for existence of " + jarFile)
 assert jarFile.isFile()
 
-jar = new JarFile( jarFile );
+jar = new JarFile(jarFile)
 
-includedEntries = [
-    "META-INF/MANIFEST.MF",
-    "MyTest.java",
-    "test.properties",
-];
-for ( String included : includedEntries )
-{
-    System.out.println( "Checking for existence of " + included );
-    assert jar.getEntry( included ) != null
+includedEntries = ["META-INF/MANIFEST.MF", "MyTest.java", "test.properties",]
+for (String included : includedEntries) {
+    System.out.println("Checking for existence of " + included)
+    assert jar.getEntry(included) != null
 }
 
-excludedEntries = [
-    "MyTest2.java",
-    "MyClass.java"
-];
-for ( String excluded : excludedEntries )
-{
-    System.out.println( "Checking for absence of " + excluded );
-    assert jar.getEntry( excluded ) == null
+excludedEntries = ["MyTest2.java", "MyClass.java"]
+for (String excluded : excludedEntries) {
+    System.out.println("Checking for absence of " + excluded)
+    assert jar.getEntry(excluded) == null
 }

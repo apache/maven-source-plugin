@@ -17,36 +17,27 @@
  * under the License.
  */
 
-import java.util.jar.*;
+import java.util.jar.*
 
-File jarFile = new File( basedir, "target/jar-with-archive-config-1.0-SNAPSHOT-sources.jar" );
-System.out.println( "Checking for existence of " + jarFile );
+File jarFile = new File(basedir, "target/jar-with-archive-config-1.0-SNAPSHOT-sources.jar")
+System.out.println("Checking for existence of " + jarFile)
 assert jarFile.isFile()
 
-JarFile jar = new JarFile( jarFile );
+JarFile jar = new JarFile(jarFile)
 
-String[] includedEntries = [
-    "META-INF/MANIFEST.MF",
-    "MyClass.java",
-    "main.properties",
-];
-for ( String included : includedEntries )
-{
-    System.out.println( "Checking for existence of " + included );
-    assert jar.getEntry( included ) != null
+String[] includedEntries = ["META-INF/MANIFEST.MF", "MyClass.java", "main.properties",]
+for (String included : includedEntries) {
+    System.out.println("Checking for existence of " + included)
+    assert jar.getEntry(included) != null
 }
 
-String[] excludedEntries = [
-    "MyTest.java",
-    "test.properties",
-];
-for ( String excluded : excludedEntries )
-{
-    System.out.println( "Checking for absence of " + excluded );
-    assert jar.getEntry( excluded ) == null
+String[] excludedEntries = ["MyTest.java", "test.properties",]
+for (String excluded : excludedEntries) {
+    System.out.println("Checking for absence of " + excluded)
+    assert jar.getEntry(excluded) == null
 }
 
-System.out.println( "Checking manifest for attribute: Implementation-Version " );
-Map manifestAttributes = jar.getManifest().getMainAttributes();
-String implVersion = manifestAttributes.getValue( "Implementation-Version" );
+System.out.println("Checking manifest for attribute: Implementation-Version ")
+Map manifestAttributes = jar.getManifest().getMainAttributes()
+String implVersion = manifestAttributes.getValue("Implementation-Version")
 assert implVersion != null

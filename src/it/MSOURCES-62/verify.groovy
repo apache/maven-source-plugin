@@ -18,18 +18,18 @@
  * under the License.
  */
 
-import java.util.jar.*;
+import java.util.jar.*
 
-File target = new File( basedir, "target" );
+File target = new File(basedir, "target")
 assert target.exists() && target.isDirectory() : "target file is missing or not a directory."
 
-File artifact = new File( target, "MSOURCES-62-1.0-SNAPSHOT-sources.jar" );
+File artifact = new File( target, "MSOURCES-62-1.0-SNAPSHOT-sources.jar" )
 assert artifact.exists() && !artifact.isDirectory() : "artifact file is missing or a directory."
 
-JarFile jar = new JarFile( artifact );
+JarFile jar = new JarFile( artifact )
 
-Attributes manifest = jar.getManifest().getMainAttributes();
+Attributes manifest = jar.getManifest().getMainAttributes()
 
-String val = manifest.getValue( new Attributes.Name( "An-Entry" ) );
-System.out.println("An-Entry:'"+val+"'");
+String val = manifest.getValue( new Attributes.Name( "An-Entry" ) )
+System.out.println("An-Entry:'"+val+"'")
 assert "Some Value".equals( val )

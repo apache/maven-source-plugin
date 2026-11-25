@@ -17,10 +17,10 @@
  * under the License.
  */
 
-File jarFile = new File( basedir, "target/jar-attached-1.0-SNAPSHOT-sources.jar" );
-System.out.println( "Checking for existence of " + jarFile );
+File jarFile = new File(basedir, "target/jar-attached-1.0-SNAPSHOT-sources.jar")
+System.out.println("Checking for existence of " + jarFile)
 assert jarFile.isFile()
 
-File attachedFile = new File( localRepositoryPath, "org/apache/maven/its/ejb/jar-attached/1.0-SNAPSHOT/jar-attached-1.0-SNAPSHOT-sources.jar" );
-System.out.println( "Checking for existence of " + attachedFile );
+File attachedFile = new File(localRepositoryPath, "org/apache/maven/its/ejb/jar-attached/1.0-SNAPSHOT/jar-attached-1.0-SNAPSHOT-sources.jar")
+System.out.println("Checking for existence of " + attachedFile)
 assert attachedFile.isFile()
