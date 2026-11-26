@@ -169,4 +169,28 @@ class SourceJarMojoOptionsTest extends AbstractSourcePluginTest {
         assertFalse(getTestSourceArchive(new File(tempDir, "target")).exists());
         assertTrue(project.getAttachedArtifacts().isEmpty());
     }
+
+    @Test
+    @InjectMojo(goal = "jar")
+    @Basedir("/unit/project-011")
+    void testJarSkipsPomPackagingEvenWithSources(SourceJarMojo mojo) throws Exception {
+        project.setPackaging("pom");
+
+        mojo.execute();
+
+        assertFalse(getSourceArchive(new File(tempDir, "target")).exists());
+        assertTrue(project.getAttachedArtifacts().isEmpty());
+    }
+
+    @Test
+    @InjectMojo(goal = "test-jar")
+    @Basedir("/unit/project-012")
+    void testTestJarSkipsPomPackagingEvenWithSources(TestSourceJarMojo mojo) throws Exception {
+        project.setPackaging("pom");
+
+        mojo.execute();
+
+        assertFalse(getTestSourceArchive(new File(tempDir, "target")).exists());
+        assertTrue(project.getAttachedArtifacts().isEmpty());
+    }
 }
