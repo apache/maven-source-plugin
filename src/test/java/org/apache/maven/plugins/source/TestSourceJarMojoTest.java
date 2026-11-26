@@ -26,6 +26,7 @@ import org.apache.maven.api.Language;
 import org.apache.maven.api.Project;
 import org.apache.maven.api.ProjectScope;
 import org.apache.maven.api.di.Provides;
+import org.apache.maven.api.plugin.annotations.Execute;
 import org.apache.maven.api.services.ProjectManager;
 import org.apache.maven.impl.DefaultSourceRoot;
 import org.apache.maven.impl.InternalSession;
@@ -37,6 +38,7 @@ import org.apache.maven.testing.plugin.stubs.SessionMock;
 import org.junit.jupiter.api.Test;
 
 import static org.apache.maven.testing.plugin.MojoExtension.getBasedir;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -133,6 +135,12 @@ public class TestSourceJarMojoTest extends AbstractSourcePluginTestCase {
             "META-INF/maven/source/maven-source-plugin-test-project-010/pom.xml",
             "META-INF/maven/source/maven-source-plugin-test-project-010/pom" + ".properties"
         });
+    }
+
+    @Test
+    void testExecutePhase() {
+        Execute execute = TestSourceJarMojo.class.getAnnotation(Execute.class);
+        assertEquals("generate-test-sources", execute.phase());
     }
 
     @Provides

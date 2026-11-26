@@ -27,7 +27,7 @@ import org.apache.maven.api.plugin.annotations.Mojo;
  * @since 2.0.3
  */
 @Mojo(name = "test-jar", defaultPhase = "package")
-@Execute(phase = "generate-sources")
+@Execute(phase = "generate-test-sources")
 public class TestSourceJarMojo extends TestSourceJarNoForkMojo {
     // no op
 }
